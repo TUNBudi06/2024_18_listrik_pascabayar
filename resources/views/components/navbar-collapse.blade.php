@@ -22,4 +22,8 @@ $logout = function (Logout $logout) {
     <ul class="navbar-nav my-lg-0">
         <x-navbar.notification class="waves-effect waves-dark"></x-navbar.notification>
     </ul>
+
+    <ul class="navbar-nav my-lg-0 pe-4 m-1">
+        <a class="btn bg-warning" wire:click="logout()">Logout</a>
+    </ul>
 </div>

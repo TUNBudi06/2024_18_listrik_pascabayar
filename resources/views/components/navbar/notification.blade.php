@@ -16,7 +16,7 @@
                 <livewire:navbar.bill-list lazy/>
             </li>
             <li>
-                <a class="nav-link text-center link" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                <a class="nav-link text-center link" href="javascript:void(0);"> <strong>Check all bills information</strong> <i class="fa fa-angle-right"></i> </a>
             </li>
         </ul>
     </div>

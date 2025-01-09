@@ -23,9 +23,9 @@
     </head>
     <body class="skin-default-dark fixed-layout">
         <div class="main-wrapper">
-            <header class="topbar">
-                <livewire:layout.navigation />
-            </header>
+            <livewire:layout.navigation />
+            <livewire:layout.sidebar />
+
         </div>
         <!-- ============================================================== -->
         <!-- All Jquery -->
