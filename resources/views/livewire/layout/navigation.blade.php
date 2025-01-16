@@ -28,6 +28,6 @@ $logout = function (Logout $logout) {
             </span>
             </a>
         </div>
-        <x-navbar-collapse></x-navbar-collapse>
+        <x-navbar.collapse></x-navbar.collapse>
     </nav>
 </header>

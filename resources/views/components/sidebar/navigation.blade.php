@@ -6,6 +6,9 @@
         <x-sidebar.nav-link :active="false" icon="fas fa-calendar-alt" href="">
             Electricity bill
         </x-sidebar.nav-link>
+        <x-sidebar.nav-link :active="false" icon=" fas fa-history" href="">
+            Payment History
+        </x-sidebar.nav-link>
     </ul>
 </nav>
 <!-- End Sidebar navigation -->

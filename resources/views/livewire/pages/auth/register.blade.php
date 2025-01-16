@@ -1,91 +1,141 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-
-use function Livewire\Volt\layout;
-use function Livewire\Volt\rules;
-use function Livewire\Volt\state;
+use App\Livewire\Forms\RegisterForm;
+use App\Models\TarifKWH;
+use function Livewire\Volt\{state, form, layout};
 
 layout('layouts.guest');
 
+form(RegisterForm::class, 'register');
+
 state([
-    'name' => '',
-    'email' => '',
-    'password' => '',
-    'password_confirmation' => ''
+    'tarif_kwh' => TarifKWH::all(),
 ]);
 
-rules([
-    'name' => ['required', 'string', 'max:255'],
-    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-    'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-]);
+$validateStep = function ($step) {
+    $rules = [];
 
-$register = function () {
-    $validated = $this->validate();
+    if ($step === 1) {
+        $rules = [
+            'register.name' => 'required',
+            'register.username' => 'required|unique:users,username|unique:pelanggans,username',
+            'register.password' => ['required', 'confirmed',\Illuminate\Validation\Rules\Password::default()],
+        ];
+    } elseif ($step === 2) {
+        $rules = [
+            'register.alamat' => 'required',
+            'register.tarif_kwh' => 'required|numeric|exists:tarif_kwh,id',
+        ];
+    } elseif ($step === 3) {
+        $rules = [
+            'register.no_kwh' => 'required|numeric',
+        ];
+    }
 
-    $validated['password'] = Hash::make($validated['password']);
+    $this->validate($rules,['register.username.unique'=>'Username already taken']);
 
-    event(new Registered($user = User::create($validated)));
+    // Increment the step after successful validation
+    $this->dispatch('step_increment',step: $step + 1);
+};
 
-    Auth::login($user);
+$submitRegister = function () {
+    $this->register->validate();
 
-    $this->redirect(route('dashboard', absolute: false), navigate: true);
+    $this->register->register();
+
+    $this->redirect(route('login'));
 };
 
 ?>
 
-<div>
-    <form wire:submit="register">
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+<div class="login-register" style="background-image:url({{asset('assets/images/background/login-register.jpg')}});">
+    <div class="login-box card">
+        <div class="card-body">
+            <form class="form-horizontal form-material">
+                <h3 class="text-center m-b-20">Sign Up</h3>
+
+                <!-- Step 1 -->
+                <div x-show="$store.step_panel.step === 1">
+                    <x-form.input-text name="name" label="Name" placeholder="Name" required autofocus
+                                       wireModel="register.name" :messages="$errors->get('register.name')[0] ?? null"/>
+                    <x-form.input-text name="username" label="Username" placeholder="Username" required
+                                       wireModel="register.username"
+                                       :messages="$errors->get('register.username')[0] ?? null"/>
+                    <x-form.input-text name="password" label="Password" placeholder="Password" type="password" required
+                                       wireModel="register.password"
+                                       :messages="$errors->get('register.password')[0] ?? null"/>
+                    <x-form.input-text name="password_confirmation" label="Password Confirmation" type="password" required
+                                       wireModel="register.password_confirmation"
+                                       :messages="$errors->get('register.password_confirmation')[0] ?? null"/>
+                    <button type="button" class="btn btn-info w-100"
+                            wire:click="validateStep(1)">
+                        Next
+                    </button>
+                </div>
+
+                <!-- Step 2 -->
+                <div x-show="$store.step_panel.step  === 2">
+                    <x-form.input-textarea name="alamat" label="Alamat" placeholder="Alamat" required
+                                           wireModel="register.alamat"
+                                           :messages="$errors->get('register.alamat')[0] ?? null"/>
+                    <x-form.input-dropdown name="tarif_kwh" label="Tarif KWH" wireModel="register.tarif_kwh"
+                                           :messages="$errors->get('register.tarif_kwh')[0] ?? null">
+                        @foreach($tarif_kwh as $index => $tarif)
+                            <x-form.input-dropdown-list value="{{$tarif->id}}"
+                                                        label="{{$index}}. {{$tarif->daya}}VA / Rp.{{$tarif->tarif_perkwh}}"></x-form.input-dropdown-list>
+                        @endforeach
+                    </x-form.input-dropdown>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" @click="$store.step_panel.step = 1">Back</button>
+                        <button type="button" class="btn btn-info"
+                                wire:click="validateStep(2)">
+                            Next
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div x-show="$store.step_panel.step  === 3">
+                    <x-form.input-text type="number" name="no_kwh" label="No KWH" placeholder="No KWH" required
+                                       wireModel="register.no_kwh"
+                                       :messages="$errors->get('register.no_kwh')[0] ?? null"/>
+                    <small class="form-control-feedback">minimal 12 digit</small>
+                    <small class="form-control-feedback">maximal 20 digit</small>
+                    <small class="form-control-feedback">your digits: <span x-text="$wire.register.no_kwh.length"></span></small>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" @click="$store.step_panel.step = 2">Back</button>
+                        <button type="button" class="btn btn-success w-100"
+                                wire:click="submitRegister">
+                            <div wire:loading.remove>Sign Up</div>
+                            <div wire:loading>Processing...</div>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="form-group m-b-0 text-center">
+                <div class="col-sm-12">
+                    Already have an account? <a href="{{route('login')}}" class="text-info m-l-5" wire:navigate><b>Sign
+                            In</b></a>
+                </div>
+            </div>
         </div>
+        <script>
+            document.addEventListener('livewire:init',() =>{
+                Alpine.store('step_panel',{
+                    step: 1,
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}" wire:navigate>
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
+                    toggle(step){
+                        this.step = step;
+                    },
+                })
+            })
+        </script>
+        @script
+            <script type="text/javascript">
+                $wire.on('step_increment',(param) =>{
+                    Alpine.store('step_panel').toggle(param.step);
+                })
+            </script>
+        @endscript
+    </div>
 </div>

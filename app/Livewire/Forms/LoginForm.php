@@ -2,24 +2,35 @@
 
 namespace App\Livewire\Forms;
 
+use App\Http\Controllers\users\checkGuards;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 use Livewire\Form;
 
 class LoginForm extends Form
 {
-    #[Validate('required|string|email')]
-    public string $email = '';
+    #[Validate('required|string')]
+    public string $username = '';
 
     #[Validate('required|string')]
     public string $password = '';
 
+    protected checkGuards $checkGuards;
+
     #[Validate('boolean')]
     public bool $remember = false;
+
+    public function __construct(Component $component, $propertyName)
+    {
+        parent::__construct($component, $propertyName);
+        $this->checkGuards = new checkGuards();
+    }
+
 
     /**
      * Attempt to authenticate the request's credentials.
@@ -30,11 +41,13 @@ class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+        $guards = $this->checkGuards->findUserInGuardsResultGuards($this->username);
+
+        if (! Auth::guard($guards)->attempt($this->only(['username', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'form.email' => trans('auth.failed'),
+                'login.username' => trans('auth.failed'),
             ]);
         }
 
@@ -55,7 +68,7 @@ class LoginForm extends Form
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'form.email' => trans('auth.throttle', [
+            'login.username' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -67,6 +80,6 @@ class LoginForm extends Form
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->username).'|'.request()->ip());
     }
 }

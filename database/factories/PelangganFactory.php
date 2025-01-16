@@ -4,12 +4,11 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pelanggan>
  */
-class UserFactory extends Factory
+class PelangganFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -24,10 +23,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'username' => fake()->unique()->userName(),
+            'username' => $this->faker->unique()->userName(),
             'password' => static::$password ??= Hash::make('12345678'),
-            'remember_token' => Str::random(10),
+            'nama_pelanggan' => $this->faker->name(),
+            'alamat' => $this->faker->address(),
+            'nomor_kwh' => $this->faker->unique()->randomNumber(8),
         ];
     }
 }
