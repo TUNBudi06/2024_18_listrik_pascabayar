@@ -13,6 +13,7 @@
         <link href="{{asset("dist/css/pages/login-register-lock.css")}}" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
+        <script src="{{asset('assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
 
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -26,6 +27,7 @@
     </head>
     <body class="skin-default card-no-border">
     <section id="wrapper">
+        <livewire:notify.alert></livewire:notify.alert>
         {{ $slot }}
     </section>
 
@@ -34,5 +36,6 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{'assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'}}"></script>
     <!--Custom JavaScript -->
+    @stack('scripts')
     </body>
 </html>

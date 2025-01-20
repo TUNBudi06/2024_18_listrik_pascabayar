@@ -15,13 +15,19 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        @stack('styles')
+
         <!-- Styles -->
         <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
+
+        <script src="{{asset('assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="skin-default-dark fixed-layout">
         <div class="main-wrapper">
+            <livewire:notify.alert />
             <livewire:layout.navigation />
             <livewire:layout.sidebar />
 
@@ -43,5 +49,6 @@
         <script src="{{asset('assets/node_modules/sparkline/jquery.sparkline.min.js')}}"></script>
         <!--Custom JavaScript -->
         <script src="{{asset('dist/js/custom.min.js')}}"></script>
+        @stack('scripts')
     </body>
 </html>

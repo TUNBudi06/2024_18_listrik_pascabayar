@@ -45,6 +45,12 @@ class LoginForm extends Form
 
         if (! Auth::guard($guards)->attempt($this->only(['username', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());
+            $retries = RateLimiter::retriesLeft($this->throttleKey(), 5);
+            $this->getComponent()->dispatch('AlertNotify',[
+                'heading'=>'Login Failed',
+                'message'=> "You have {$retries} attempts left.",
+                'icon'=>'error'
+            ]);
 
             throw ValidationException::withMessages([
                 'login.username' => trans('auth.failed'),
@@ -67,6 +73,11 @@ class LoginForm extends Form
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
+        $this->getComponent()->dispatch('AlertNotify',[
+            'heading'=>'Too many login attempts',
+            'message'=> "Please try again in {$seconds} seconds.",
+            'icon'=>'error'
+        ]);
         throw ValidationException::withMessages([
             'login.username' => trans('auth.throttle', [
                 'seconds' => $seconds,
