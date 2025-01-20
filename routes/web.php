@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware([IfLoginUser::class])
-    ->name('dashboard');
+Route::middleware([IfLoginUser::class])->group(function () {
+    Route::view('dashboard', 'dashboard')
+        ->name('dashboard');
+});
 
 require __DIR__.'/auth.php';

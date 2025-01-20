@@ -30,7 +30,7 @@
             <livewire:notify.alert />
             <livewire:layout.navigation />
             <livewire:layout.sidebar />
-
+            {{ $slot }}
         </div>
         <!-- ============================================================== -->
         <!-- All Jquery -->
