@@ -7,12 +7,4 @@
     @pushonce('scripts')
         <script src="{{asset('assets/node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
     @endpushonce
-
-    @script
-        <script>
-            $wire.on('sweetAlertSelf',(arr)=>{
-
-            })
-        </script>
-    @endscript
 </div>
