@@ -1,3 +1,18 @@
 <div>
-    {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
+    @assets
+    <!--alerts CSS -->
+    <link href="{{asset('assets/node_modules/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
+    @endassets
+
+    @pushonce('scripts')
+        <script src="{{asset('assets/node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+    @endpushonce
+
+    @script
+        <script>
+            $wire.on('sweetAlertSelf',(arr)=>{
+
+            })
+        </script>
+    @endscript
 </div>
