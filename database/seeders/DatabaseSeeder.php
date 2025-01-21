@@ -4,9 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\AdminLevel;
 use App\Models\Pelanggan;
+use App\Models\PembayaranKWH;
+use App\Models\PenggunaanKWH;
+use App\Models\TagihanKWH;
 use App\Models\TarifKWH;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -88,5 +92,83 @@ class DatabaseSeeder extends Seeder
                 'tarif_kwh_id' => 1
             ]
         );
+
+        PenggunaanKWH::insert([
+            [
+                'id'=>1,
+                'pelanggan_id' => 1,
+                'bulan' => Carbon::now()->subMonths(2)->format('F'),
+                'tahun' => 2024,
+                'meter_awal' => 100,
+                'meter_akhir' => 200
+            ],
+            [
+                'id'=>2,
+                'pelanggan_id' => 1,
+                'bulan' => Carbon::now()->subMonths(1)->format('F'),
+                'tahun' => 2024,
+                'meter_awal' => 100,
+                'meter_akhir' => 200
+            ],
+            [
+                'id'=>3,
+                'pelanggan_id' => 1,
+                'bulan' => Carbon::now()->subMonths(0)->format('F'),
+                'tahun' => 2025,
+                'meter_awal' => 100,
+                'meter_akhir' => 200
+            ]
+        ]);
+
+        TagihanKWH::insert([
+            [
+                'id'=>1,
+                'pelanggan_id' => 1,
+                'penggunaan_kwh_id' => 1,
+                'bulan' => Carbon::now()->subMonths(2)->format('F'),
+                'tahun' => 2024,
+                'jumlah_meter' => 100,
+                'status' => 1
+            ],
+            [
+                'id'=>2,
+                'pelanggan_id' => 1,
+                'penggunaan_kwh_id' => 2,
+                'bulan' => Carbon::now()->subMonths(1)->format('F'),
+                'tahun' => 2024,
+                'jumlah_meter' => 100,
+                'status' => 1
+            ],
+            [
+                'id'=>3,
+                'pelanggan_id' => 1,
+                'penggunaan_kwh_id' => 3,
+                'bulan' => Carbon::now()->subMonths(0)->format('F'),
+                'tahun' => 2025,
+                'jumlah_meter' => 100,
+                'status' => 0
+            ],
+        ]);
+
+        PembayaranKWH::insert([
+            [
+                'tagihan_kwh_id' => 1,
+                'pelanggan_id' => 1,
+                'total_tagihan' => 1000,
+                'biaya_admin' => 0,
+                'total_bayar' => 1000,
+                'tanggal_pembayaran' => '2025-01-21',
+                'user_id' => 1
+            ],
+            [
+                'tagihan_kwh_id' => 2,
+                'pelanggan_id' => 1,
+                'total_tagihan' => 1000,
+                'biaya_admin' => 0,
+                'total_bayar' => 1000,
+                'tanggal_pembayaran' => '2025-01-21',
+                'user_id' => 1
+            ]
+        ]);
     }
 }

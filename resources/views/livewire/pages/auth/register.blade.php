@@ -104,11 +104,10 @@ $submitRegister = function () {
                     <small class="form-control-feedback">your digits: <span x-text="$wire.register.no_kwh.length"></span></small>
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" @click="$store.step_panel.step = 2">Back</button>
-                        <button type="button" class="btn btn-success w-100"
+                        <x-form.button-submit type="button" class="btn btn-success w-100"
                                 wire:click="submitRegister">
-                            <div wire:loading.remove>Sign Up</div>
-                            <div wire:loading>Processing...</div>
-                        </button>
+                            Sign Up
+                        </x-form.button-submit>
                     </div>
                 </div>
             </form>

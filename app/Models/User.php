@@ -42,8 +42,18 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public function adminLevel()
+    {
+        return $this->belongsTo(AdminLevel::class, 'admin_level_id', 'id');
+    }
+
+    public function pembayaranKWH()
+    {
+        return $this->hasMany(PembayaranKWH::class, 'user_id', 'id');
     }
 }

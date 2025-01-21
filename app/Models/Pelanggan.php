@@ -18,8 +18,25 @@ class Pelanggan extends Authenticatable
         'nomor_kwh' => 'integer'
     ];
 
+    protected $hidden = ['password'];
+
     public function getTarif()
     {
-        return $this->belongsTo(TarifKWH::class, 'tarif_id', 'id');
+        return $this->hasOne(TarifKWH::class, 'id', 'tarif_kwh_id');
+    }
+
+    public function PenggunaanKWH()
+    {
+        return $this->hasMany(PenggunaanKWH::class, 'pelanggan_id', 'id');
+    }
+
+    public function TagihanKWH()
+    {
+        return $this->hasMany(TagihanKWH::class, 'pelanggan_id', 'id');
+    }
+
+    public function PembayaranKWH()
+    {
+        return $this->hasMany(PembayaranKWH::class, 'pelanggan_id', 'id');
     }
 }

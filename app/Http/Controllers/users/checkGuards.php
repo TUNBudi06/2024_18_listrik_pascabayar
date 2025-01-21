@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\users;
 
+use AllowDynamicProperties;
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Concurrency;
 
 class checkGuards extends Controller

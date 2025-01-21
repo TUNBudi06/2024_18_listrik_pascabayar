@@ -34,15 +34,9 @@ $submitLogin = function () {
                 </div>
                 <div class="form-group text-center">
                     <div class="col-xs-12 p-b-20">
-                        <button class="btn w-100 btn-lg btn-info btn-rounded text-white" type="submit">
-                            <div wire:loading.remove>
-                                Log In
-                            </div>
-                            <div wire:loading>
-                                <span class="spinner-border spinner-border-sm"></span>
-                                Loading...
-                            </div>
-                        </button>
+                        <x-form.button-submit class="btn w-100 btn-lg btn-info btn-rounded text-white" type="submit">
+                            Log In
+                        </x-form.button-submit>
                     </div>
                 </div>
                 <div class="form-group m-b-0">
@@ -50,7 +44,7 @@ $submitLogin = function () {
                         Don't have an account?
                         <a href="{{route('register')}}"
                            class="text-info m-l-5"
-                           wire:navigate>
+                           >
                             <b>
                                 Sign Up
                             </b>

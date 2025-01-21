@@ -21,6 +21,10 @@
         <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
 
         <script src="{{asset('assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
+        <link rel="stylesheet" type="text/css"
+              href="{{ asset('assets/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
+        <link rel="stylesheet" type="text/css"
+              href="{{ asset('assets/node_modules/datatables.net-bs4/css/responsive.dataTables.min.css') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -30,7 +34,9 @@
             <livewire:notify.alert />
             <livewire:layout.navigation />
             <livewire:layout.sidebar />
-            {{ $slot }}
+            <div class="page-wrapper">
+                {{ $slot }}
+            </div>
         </div>
         <!-- ============================================================== -->
         <!-- All Jquery -->
@@ -42,8 +48,6 @@
         <script src="{{asset('dist/js/perfect-scrollbar.jquery.min.js')}}"></script>
         <!--Wave Effects -->
         <script src="{{asset('dist/js/waves.js')}}"></script>
-        <!--Menu sidebar -->
-        <script src="{{asset('dist/js/sidebarmenu.js')}}"></script>
         <!--stickey kit -->
         <script src="{{asset('assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
         <script src="{{asset('assets/node_modules/sparkline/jquery.sparkline.min.js')}}"></script>

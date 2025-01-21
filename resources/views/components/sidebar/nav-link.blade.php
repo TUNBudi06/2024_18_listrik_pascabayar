@@ -1,15 +1,15 @@
-@props(['active','icon','title','href'])
+@props(['icon','title','route'=>null])
 
 <?php
     $title = $title ?? false;
-    $classes = ($active ?? false) ? "active" : "";
+    $classes = (request()->routeIs($route) ?? false)  ? "active" : "";
 ?>
 
 @if($title)
     <li class="nav-small-cap">{{$title}}</li>
 @endif
-<li>
-    <a class="waves-effect waves-dark" href="{{$href}}" aria-expanded="false">
+<li class="{{$classes}}">
+    <a {{$attributes->merge(['class'=>$classes])}} href="{{$route ? route($route) : '#'}}" aria-expanded="false">
         <i class="{{$icon}}"></i>
         <span class="hide-menu">{{$slot}}</span>
     </a>
