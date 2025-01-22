@@ -26,7 +26,7 @@ new class extends Component {
 <div class="card">
     <div class="card-body">
         <h3 class="card-title">
-            User List
+            Payment List
         </h3>
         <x-table.datatables name="IdUser" :columns="$columnTable">
             @foreach($dataTable as $index => $table)

@@ -26,7 +26,7 @@ new class extends Component {
 <div class="card">
     <div class="card-body">
         <h3 class="card-title">
-            Payment List
+            User List
         </h3>
         <x-table.datatables name="IdUser" :columns="$columnTable">
             @foreach($dataTable as $index => $table)
@@ -34,7 +34,8 @@ new class extends Component {
                     <td>{{$index}}</td>
                     <td>{{$table->nama_pelanggan}}</td>
                     <td>{{$table->nomor_kwh}}</td>
-                    <td>Rp. {{number_format($table->getTarif->tarif_perkwh,0,',','.')}}</td>
+                    <td>Rp. {{number_format($table->getTarif->tarif_perkwh,0,',','.')}}/{{$table->getTarif->daya}}VA
+                    </td>
                 </tr>
             @endforeach
         </x-table.datatables>
