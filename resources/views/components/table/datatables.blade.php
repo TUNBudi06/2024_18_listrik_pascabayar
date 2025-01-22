@@ -6,7 +6,7 @@
         <thead>
             <tr>
                 @foreach($columns as $index => $column)
-                    <th>{{$index}}</th>
+                    <th>{{$column}}</th>
                 @endforeach
             </tr>
         </thead>

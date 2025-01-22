@@ -97,7 +97,7 @@ class InfoBoxUser extends Component
         array_reduce($pembayaran, function($carry, $item) use (&$total){
             $total += $item['pembayaran_k_w_h']['total_tagihan'];
         });
-        $this->count = $total;
+        $this->count = 'Rp. '.number_format($total,0,',','.');
         $this->icon = 'far fa-money-bill-alt';
         $this->message = 'Total Payment Has Been Payout in '.$year;
     }

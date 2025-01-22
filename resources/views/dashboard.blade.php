@@ -34,7 +34,9 @@
                 <livewire:pages.dashboard.info-box-user type="totalPaymentHasBeenPayout" class="round align-self-center round-success" lazy />
                 <livewire:pages.dashboard.info-box-user type="totalPelanggans" class="round align-self-center round-info" lazy />
             @endif
-
+            <div class="col-12">
+                <livewire:pages.dashboard.datatableusersshown type="ListAllCustomer" lazy />
+            </div>
         <!-- Row -->
         </div>
     </div>

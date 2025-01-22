@@ -37,6 +37,13 @@
             <div class="page-wrapper">
                 {{ $slot }}
             </div>
+            <footer class="footer">
+                © 2025 Electric Payment by TUNBudi06
+                <a href="https://www.instagram.com/tunbudi06">Instagram</a>
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- All Jquery -->
