@@ -17,27 +17,38 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container">
         <!-- ============================================================== -->
         <!-- Info box -->
         <!-- ============================================================== -->
         <!-- Row -->
         <div class="row">
             @if(guardItems::checkGuardsIfLoginResultTypeUser() === "pelanggan")
-                <livewire:pages.dashboard.info-box-user type="totalUsageThisYearNow" class="round align-self-center round-primary" lazy />
-                <livewire:pages.dashboard.info-box-user type="totalUsageYearBefore" class="round align-self-center round-info" lazy />
-                <livewire:pages.dashboard.info-box-user type="paymentAndKWHLastMonth" class="round align-self-center round-info" lazy />
-                <livewire:pages.dashboard.info-box-user type="tarifKWHShown" class="round align-self-center round-info" lazy />
+                <livewire:pages.dashboard.info-box-user type="totalUsageThisYearNow"
+                                                        class="round align-self-center round-primary" lazy/>
+                <livewire:pages.dashboard.info-box-user type="totalUsageYearBefore"
+                                                        class="round align-self-center round-info" lazy/>
+                <livewire:pages.dashboard.info-box-user type="paymentAndKWHLastMonth"
+                                                        class="round align-self-center round-info" lazy/>
+                <livewire:pages.dashboard.info-box-user type="tarifKWHShown" class="round align-self-center round-info"
+                                                        lazy/>
             @else
-                <livewire:pages.dashboard.info-box-user type="totalAllUsagesInYear" class="round align-self-center round-primary" lazy />
-                <livewire:pages.dashboard.info-box-user type="totalAllUsagesLastYear" class="round align-self-center round-info" lazy />
-                <livewire:pages.dashboard.info-box-user type="totalPaymentHasBeenPayout" class="round align-self-center round-success" lazy />
-                <livewire:pages.dashboard.info-box-user type="totalPelanggans" class="round align-self-center round-info" lazy />
+                <livewire:pages.dashboard.info-box-user type="totalAllUsagesInYear"
+                                                        class="round align-self-center round-primary" lazy/>
+                <livewire:pages.dashboard.info-box-user type="totalAllUsagesLastYear"
+                                                        class="round align-self-center round-info" lazy/>
+                <livewire:pages.dashboard.info-box-user type="totalPaymentHasBeenPayout"
+                                                        class="round align-self-center round-success" lazy/>
+                <livewire:pages.dashboard.info-box-user type="totalPelanggans"
+                                                        class="round align-self-center round-info" lazy/>
             @endif
             <div class="col-12">
-                <livewire:pages.dashboard.datatableusersshown type="ListAllCustomer" lazy />
+                <livewire:pages.dashboard.datatableusersshown lazy/>
             </div>
-        <!-- Row -->
+            <div class="col-12">
+                <livewire:pages.dashboard.datatablelatestpaymentsshown lazy/>
+            </div>
+            <!-- Row -->
         </div>
     </div>
 </x-app-layout>
