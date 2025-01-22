@@ -34,14 +34,8 @@
                 <livewire:pages.dashboard.info-box-user type="totalPaymentHasBeenPayout" class="round align-self-center round-success" lazy />
                 <livewire:pages.dashboard.info-box-user type="totalPelanggans" class="round align-self-center round-info" lazy />
             @endif
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">List Users</h4>
-                        <x-table.datatables></x-table.datatables>
-                    </div>
-            </div>
-        </div>
+
         <!-- Row -->
+        </div>
     </div>
 </x-app-layout>
