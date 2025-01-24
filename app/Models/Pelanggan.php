@@ -11,11 +11,12 @@ class Pelanggan extends Authenticatable
     use HasFactory;
 
     protected $table = 'pelanggans';
-    protected $fillable = ['username', 'password', 'nama_pelanggan', 'alamat', 'nomor_kwh','tarif_kwh_id'];
+
+    protected $fillable = ['username', 'password', 'nama_pelanggan', 'alamat', 'nomor_kwh', 'tarif_kwh_id'];
 
     protected $casts = [
         'id_pelanggan' => 'integer',
-        'nomor_kwh' => 'integer'
+        'nomor_kwh' => 'integer',
     ];
 
     protected $hidden = ['password'];
@@ -37,6 +38,6 @@ class Pelanggan extends Authenticatable
 
     public function PembayaranKWH()
     {
-        return $this->hasMany(PembayaranKWH::class, 'pelanggan_id', 'id');
+        return $this->hasMany(PembayaranKWH::class, 'pelanggan_id', 'id')->with(['tagihanKWH']);
     }
 }

@@ -32,7 +32,13 @@ class TagihanKWH extends Model
         'status' => 'boolean',
     ];
 
-    public function PembayaranKWH(){
+    public function PembayaranKWH()
+    {
         return $this->hasOne(PembayaranKWH::class, 'tagihan_kwh_id', 'id');
+    }
+
+    public function PelangganKWH()
+    {
+        return $this->hasOne(Pelanggan::class, 'id', 'pelanggan_id');
     }
 }

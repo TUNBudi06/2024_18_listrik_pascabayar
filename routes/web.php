@@ -8,6 +8,7 @@ Route::view('/', 'welcome');
 Route::middleware([IfLoginUser::class])->group(function () {
     Route::view('dashboard', 'dashboard')
         ->name('dashboard');
+    Route::view('electricBills', 'electricBills')->name('electricBills');
 });
 
 require __DIR__.'/auth.php';

@@ -32,6 +32,7 @@
                                                         class="round align-self-center round-info" lazy/>
                 <livewire:pages.dashboard.info-box-user type="tarifKWHShown" class="round align-self-center round-info"
                                                         lazy/>
+                <livewire:pages.dashboard.datatablepaymentbyuserslistshown lazy/>
             @else
                 <livewire:pages.dashboard.info-box-user type="totalAllUsagesInYear"
                                                         class="round align-self-center round-primary" lazy/>
@@ -41,13 +42,16 @@
                                                         class="round align-self-center round-success" lazy/>
                 <livewire:pages.dashboard.info-box-user type="totalPelanggans"
                                                         class="round align-self-center round-info" lazy/>
+                <div class="col-12">
+                    <livewire:pages.dashboard.datatableusersshown lazy/>
+                </div>
+                <div class="col-12">
+                    <livewire:pages.dashboard.datatablelatestpaymentsshown lazy/>
+                </div>
+                <div class="col-12">
+                    <livewire:pages.dashboard.datatableadminslistshown lazy/>
+                </div>
             @endif
-            <div class="col-12">
-                <livewire:pages.dashboard.datatableusersshown lazy/>
-            </div>
-            <div class="col-12">
-                <livewire:pages.dashboard.datatablelatestpaymentsshown lazy/>
-            </div>
             <!-- Row -->
         </div>
     </div>

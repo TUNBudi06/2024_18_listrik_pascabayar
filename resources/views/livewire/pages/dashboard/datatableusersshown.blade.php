@@ -12,7 +12,9 @@ new class extends Component {
 
     public function mount()
     {
-        $this->dataTable = cacheStore::PelangganListCache();
+        $this->dataTable = Cache::store('redis')->flexible('PelangganList', [60 * 60 * 24, 60 * 60 * 24 * 2], function () {
+            return Pelanggan::with(['getTarif'])->orderBy('nama_pelanggan')->get();
+        });;
     }
 
     public function placeholder()
@@ -28,7 +30,7 @@ new class extends Component {
         <h3 class="card-title">
             User List
         </h3>
-        <x-table.datatables name="IdUser" :columns="$columnTable">
+        <x-table.datatables name="IdTableUser" :columns="$columnTable">
             @foreach($dataTable as $index => $table)
                 <tr>
                     <td>{{$index}}</td>

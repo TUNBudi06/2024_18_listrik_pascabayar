@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\cacheStore;
 use App\Models\Pelanggan;
+use App\Models\PembayaranKWH;
 use Livewire\Volt\Component;
 use function Livewire\Volt\{state};
 
@@ -12,7 +13,9 @@ new class extends Component {
 
     public function mount()
     {
-        $this->dataTable = cacheStore::PaymentPelangganListCache();
+        $this->dataTable = Cache::store('redis')->flexible('PelangganPaymentList', [60 * 60 * 24, 60 * 60 * 24 * 2], function () {
+            return PembayaranKWH::with(['pelangganKWH', 'tagihanKWH'])->orderBy('tanggal_pembayaran', 'desc')->get();
+        });;
     }
 
     public function placeholder()
@@ -28,7 +31,7 @@ new class extends Component {
         <h3 class="card-title">
             Payment List
         </h3>
-        <x-table.datatables name="IdUser" :columns="$columnTable">
+        <x-table.datatables name="IdTablePayment" :columns="$columnTable">
             @foreach($dataTable as $index => $table)
                 <tr>
                     <td>{{$index}}</td>

@@ -15,20 +15,18 @@ class PembayaranKWH extends Model
     protected $fillable = [
         'tagihan_kwh_id',
         'pelanggan_id',
-        'bayar_pelanggan',
         'total_tagihan',
         'biaya_admin',
         'total_bayar',
         'tanggal_pembayaran',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [
         'tanggal_pembayaran' => 'date',
-        'bayar_pelanggan' => 'float',
         'total_tagihan' => 'float',
         'biaya_admin' => 'float',
-        'total_bayar' => 'float'
+        'total_bayar' => 'float',
     ];
 
     public function tagihanKWH()
@@ -36,11 +34,13 @@ class PembayaranKWH extends Model
         return $this->hasOne(TagihanKWH::class, 'id', 'tagihan_kwh_id');
     }
 
-    public function userAdmin() {
+    public function userAdmin()
+    {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function pelangganKWH() {
+    public function pelangganKWH()
+    {
         return $this->hasOne(Pelanggan::class, 'id', 'pelanggan_id');
     }
 }
