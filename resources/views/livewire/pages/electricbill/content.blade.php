@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\users\guardItems;
 use App\Livewire\Forms\PelangganPaymentConfirmation;
+use App\Livewire\Notify\Alert;
+use App\Models\PembayaranKWH;
 use App\Models\TagihanKWH;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
@@ -18,6 +20,9 @@ new class extends Component {
 
     #[Validate(['integer'], as: "Bill", onUpdate: false)]
     public $total_tagihan;
+
+    #[Validate(['integer', 'exists:tagihan_kwh,id'], as: "Id Data", onUpdate: false)]
+    public $id_data;
 
     protected function loadPayment()
     {
@@ -41,7 +46,17 @@ new class extends Component {
                 ]);
             }
 
-            // Jika validasi berhasil, kirim event untuk menutup modal
+            $data = TagihanKWH::find($this->id_data);
+            $data->status = 1;
+            $data->save();
+
+            $data = PembayaranKWH::where('tagihan_kwh_id', $this->id_data)->first();
+            $data->total_bayar = $this->total_bayar;
+            $data->tanggal_pembayaran = now();
+            $data->save();
+
+            $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Payment Success'])->to(Alert::class);
+            $this->redirect(route('electricBills'));
             if (!$this->getErrorBag()->any()) {
                 $this->dispatch('closeModal');
             }
@@ -116,9 +131,7 @@ new class extends Component {
                                         <form class="form-horizontal form-bordered" wire:submit="submitBtn()">
                                             <div class="row">
                                                 <div class="col-5">
-                                                    @php
-                                                        Debugbar::info($errors)
-                                                    @endphp
+                                                    <input type="hidden" wire:model="id_data">
                                                     <x-form.input-text name="UangBayar" label="Pay your Money"
                                                                        placeholder="140000"
                                                                        type="number"
@@ -163,14 +176,12 @@ new class extends Component {
     const modalElement = document.getElementById('livewireModal');
     const modal = new bootstrap.Modal(modalElement);
 
-    // Event listener untuk menutup modal setelah submit berhasil
     Livewire.on('closeModal', () => {
         modal.hide();
     });
 
-    // Event listener untuk memeriksa error validasi
     Livewire.on('validationFailed', () => {
-        modal.show(); // Pertahankan modal terbuka jika validasi gagal
+        modal.show();
     });
 
     Alpine.store('RowData', {
@@ -185,7 +196,7 @@ new class extends Component {
             console.log(idData);
             this.headerModal = (idData['pembayaran_k_w_h']['total_tagihan'] + idData['pembayaran_k_w_h']['biaya_admin']).toLocaleString(options);
             $wire.total_tagihan = idData['pembayaran_k_w_h']['total_tagihan'] + idData['pembayaran_k_w_h']['biaya_admin'];
-            console.log(this.headerModal);
+            $wire.id_data = id;
 
             modal.show()
         }

@@ -7,7 +7,7 @@
             <x-sidebar.nav-link route="electricBills" icon="fas fa-calendar-alt">
                 Electricity bill
             </x-sidebar.nav-link>
-            <x-sidebar.nav-link icon="mdi mdi-calendar-range">
+            <x-sidebar.nav-link route="UsageHistory" icon="mdi mdi-calendar-range">
                 Usage History
             </x-sidebar.nav-link>
             <x-sidebar.nav-link icon=" fas fa-history">

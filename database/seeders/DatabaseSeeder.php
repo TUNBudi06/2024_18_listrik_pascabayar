@@ -169,13 +169,15 @@ class DatabaseSeeder extends Seeder
                 'tanggal_pembayaran' => '2025-01-21',
                 'user_id' => 1,
             ],
+        ]);
+
+        PembayaranKWH::create(
             [
-                'tagihan_kwh_id' => 2,
+                'tagihan_kwh_id' => 3,
                 'pelanggan_id' => 1,
                 'total_tagihan' => 50000,
                 'biaya_admin' => 2500,
                 'user_id' => 1,
-            ],
-        ]);
+            ]);
     }
 }
