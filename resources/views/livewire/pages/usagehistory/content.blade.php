@@ -41,11 +41,6 @@ new class extends Component {
                 <div class="card-body">
                     <h4 class="card-title">Usage History</h4>
                     <x-table.datatables :columns="$columns" name="usageHistory">
-                        <template x-if="$store.RowData.data.length === 0">
-                            <tr>
-                                <td colspan="7" class="text-center">No data available.</td>
-                            </tr>
-                        </template>
                         <template x-for="(dataTab, index) in $store.RowData.data">
                             <tr>
                                 <td x-text="index + 1"></td>
@@ -58,7 +53,7 @@ new class extends Component {
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="btn btn-success">Success</span>
+                                    <span class="btn btn-success disabled">Success</span>
                                 </td>
                                 <td><span class="btn btn-info">Print</span></td>
                             </tr>
@@ -71,16 +66,18 @@ new class extends Component {
                         data: @json($dataTable), // Pastikan data dikirim dalam format JSON
                     });
 
-                    // Inisialisasi DataTables setelah data selesai dimuat
-                    Alpine.effect(() => {
-                        if (Alpine.store('RowData').data.length > 0) {
-                            // Pastikan DataTables tidak diinisialisasi ulang
-                            if ($.fn.DataTable.isDataTable('#usageHistoryTable')) {
-                                $('#usageHistoryTable').DataTable().destroy();
+                    $(document).ready(function () {
+                        // Inisialisasi DataTables setelah data selesai dimuat
+                        Alpine.effect(() => {
+                            if (Alpine.store('RowData').data.length > 0) {
+                                // Pastikan DataTables tidak diinisialisasi ulang
+                                if ($.fn.DataTable.isDataTable('#usageHistoryTable')) {
+                                    $('#usageHistoryTable').DataTable().destroy();
+                                }
+                                $('#usageHistoryTable').DataTable();
                             }
-                            $('#usageHistoryTable').DataTable();
-                        }
-                    });
+                        });
+                    })
                 </script>
                 @endscript
             </div>

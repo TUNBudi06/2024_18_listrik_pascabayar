@@ -16,7 +16,15 @@
     @script
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#{{$name}}").DataTable()
+            {{--$("#{{$name}}").DataTable()--}}
+            // Inisialisasi DataTables setelah data selesai dimuat
+            Alpine.effect(() => {
+                // Pastikan DataTables tidak diinisialisasi ulang
+                if ($.fn.DataTable.isDataTable("#{{$name}}")) {
+                    $("#{{$name}}").DataTable().destroy();
+                }
+                $("#{{$name}}").DataTable();
+            });
         });
     </script>
     @endscript
