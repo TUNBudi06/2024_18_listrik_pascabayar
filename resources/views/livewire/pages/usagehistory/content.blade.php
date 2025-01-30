@@ -65,22 +65,12 @@ new class extends Component {
                     Alpine.store('RowData', {
                         data: @json($dataTable), // Pastikan data dikirim dalam format JSON
                     });
-
-                    $(document).ready(function () {
-                        // Inisialisasi DataTables setelah data selesai dimuat
-                        Alpine.effect(() => {
-                            if (Alpine.store('RowData').data.length > 0) {
-                                // Pastikan DataTables tidak diinisialisasi ulang
-                                if ($.fn.DataTable.isDataTable('#usageHistoryTable')) {
-                                    $('#usageHistoryTable').DataTable().destroy();
-                                }
-                                $('#usageHistoryTable').DataTable();
-                            }
-                        });
-                    })
                 </script>
                 @endscript
             </div>
+        </div>
+        <div class="col-12">
+            
         </div>
     </div>
 </div>
