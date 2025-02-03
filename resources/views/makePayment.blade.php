@@ -18,13 +18,13 @@
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end pe-4">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Payment History</li>
+                    <li class="breadcrumb-item active">Payment Management</li>
                 </ol>
             </div>
         </div>
     </div>
     <div class="container">
-        <livewire:pages.Usagehistory.content lazy/>
+        <livewire:pages.makepayment.billspages/>
     </div>
 
     <x-slot name="scriptJS">

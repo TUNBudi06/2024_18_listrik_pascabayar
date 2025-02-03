@@ -10,6 +10,7 @@ Route::middleware([IfLoginUser::class])->group(function () {
         ->name('dashboard');
     Route::view('electricBills', 'electricBills')->name('electricBills');
     Route::view('UsageHistory', 'usageHistory')->name('UsageHistory');
+    Route::view('Payment-Management', 'makePayment')->name('make-payment');
 });
 
 require __DIR__.'/auth.php';

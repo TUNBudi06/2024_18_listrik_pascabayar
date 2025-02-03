@@ -11,6 +11,7 @@ class PenggunaanKWH extends Model
     use HasFactory;
 
     protected $table = 'penggunaan_kwh';
+
     protected $fillable = [
         'pelanggan_id',
         'bulan',
@@ -28,4 +29,6 @@ class PenggunaanKWH extends Model
     ];
 
     public $timestamps = true;
+
+    //    public function
 }

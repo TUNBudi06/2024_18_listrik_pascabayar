@@ -28,7 +28,10 @@
 </head>
 <body class="skin-default-dark fixed-layout">
 <div class="main-wrapper">
-    <livewire:notify.alert/>
+    @use(App\Http\Controllers\users\guardItems)
+    @if(guardItems::checkGuardsIfLoginResultTypeUser() === "pelanggan")
+        <livewire:notify.alert/>
+    @endif
     <livewire:layout.navigation/>
     <livewire:layout.sidebar/>
     <div class="page-wrapper">

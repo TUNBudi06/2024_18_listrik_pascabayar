@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tagihan_kwh', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans');
+            $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->cascadeOnDelete();
             $table->foreignId('penggunaan_kwh_id')->nullable()->constrained('penggunaan_kwh');
             $table->string('bulan');
             $table->string('tahun');

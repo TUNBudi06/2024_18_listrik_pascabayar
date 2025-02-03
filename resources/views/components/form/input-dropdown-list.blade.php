@@ -1,3 +1,3 @@
-@props(['value'=>null,'name'=>'','label'=>''])
+@props(['value'=>null,'label'=>''])
 
 <option value="{{$value}}">{{$label}}</option>

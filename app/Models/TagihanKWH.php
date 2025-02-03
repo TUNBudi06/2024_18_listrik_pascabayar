@@ -39,6 +39,11 @@ class TagihanKWH extends Model
 
     public function PelangganKWH()
     {
-        return $this->hasOne(Pelanggan::class, 'id', 'pelanggan_id');
+        return $this->hasOne(Pelanggan::class, 'id', 'pelanggan_id')->with(['getTarif']);
+    }
+
+    public function PenggunaanKWH()
+    {
+        return $this->hasOne(PenggunaanKWH::class, 'id', 'penggunaan_kwh_id');
     }
 }

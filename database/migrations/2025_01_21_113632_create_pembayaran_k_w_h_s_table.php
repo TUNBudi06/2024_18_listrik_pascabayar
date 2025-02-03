@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pembayaran_kwh', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tagihan_kwh_id')->constrained('tagihan_kwh');
-            $table->foreignId('pelanggan_id')->constrained('pelanggans');
+            $table->foreignId('tagihan_kwh_id')->constrained('tagihan_kwh')->cascadeOnDelete();
+            $table->foreignId('pelanggan_id')->constrained('pelanggans')->cascadeOnDelete();
             $table->string('total_tagihan');
             $table->string('biaya_admin');
             $table->string('total_bayar')->nullable();

@@ -7,13 +7,10 @@
             <x-sidebar.nav-link route="electricBills" icon="fas fa-calendar-alt">
                 Electricity bill
             </x-sidebar.nav-link>
-            <x-sidebar.nav-link route="UsageHistory" icon="mdi mdi-calendar-range">
-                Usage History
-            </x-sidebar.nav-link>
-            <x-sidebar.nav-link icon=" fas fa-history">
+            <x-sidebar.nav-link route="UsageHistory" icon=" fas fa-history">
                 Payment History
             </x-sidebar.nav-link>
-            <x-sidebar.nav-link title="---- Bank Management" icon="mdi mdi-contacts">
+            <x-sidebar.nav-link route="make-payment" title="---- Bank Management" icon="mdi mdi-contacts">
                 Make Payment
             </x-sidebar.nav-link>
             <x-sidebar.nav-link icon=" fas fa-check-square">
