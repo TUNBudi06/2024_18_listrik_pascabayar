@@ -11,10 +11,10 @@
                 Payment History
             </x-sidebar.nav-link>
             <x-sidebar.nav-link route="make-payment" title="---- Bank Management" icon="mdi mdi-contacts">
-                Make Payment
+                Make Billing
             </x-sidebar.nav-link>
-            <x-sidebar.nav-link icon=" fas fa-check-square">
-                Verified Payment
+            <x-sidebar.nav-link icon=" fas fa-check-square" route="confirm-and-pay">
+                Pay&Confirm
             </x-sidebar.nav-link>
             <x-sidebar.nav-link icon="fas fa-newspaper">
                 Generate Report

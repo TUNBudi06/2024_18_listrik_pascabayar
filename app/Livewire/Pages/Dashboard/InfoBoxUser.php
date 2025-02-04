@@ -55,6 +55,7 @@ class InfoBoxUser extends Component
             ->where('bulan', Carbon::now()->subMonth()->format('F'))
             ->where('tahun', Carbon::now()->subMonth()->format('Y'))
             ->first();
+        //        \Debugbar::info($getKwh);
         $kwh = ($getKwh->jumlah_meter ?? 0).' KWH';
         $bayar = $getKwh->PembayaranKWH->total_bayar ?? 0;
         $this->icon = 'far fa-money-bill-alt';

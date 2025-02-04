@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\users\guardItems;
-use App\Livewire\Forms\PelangganPaymentConfirmation;
 use App\Livewire\Notify\Alert;
 use App\Models\PembayaranKWH;
 use App\Models\TagihanKWH;
@@ -9,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
+use Illuminate\Support\Facades\Cache;
 
 new class extends Component {
     public $isOpen = true;
@@ -27,10 +27,8 @@ new class extends Component {
     protected function loadPayment()
     {
         $data = TagihanKWH::with(["PembayaranKWH"])->where('pelanggan_id', guardItems::checkGuardsIfLoginResultId())->where('status', 0)->get()
-            ->map(function ($item) {
-                if (isset($item->PembayaranKWH)) {
-                    return $item;
-                }
+            ->filter(function ($item) {
+                return isset($item->PembayaranKWH);
             });
         $this->dataTable = $data;
     }
@@ -54,6 +52,9 @@ new class extends Component {
             $data->total_bayar = $this->total_bayar;
             $data->tanggal_pembayaran = now();
             $data->save();
+
+            Cache::forget("listPaymentPelangganId");
+            Cache::forget("listPenggunaanPelangganId");
 
             $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Payment Success'])->to(Alert::class);
             $this->redirect(route('electricBills'));

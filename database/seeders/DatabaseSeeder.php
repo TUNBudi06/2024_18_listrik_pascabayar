@@ -135,7 +135,7 @@ class DatabaseSeeder extends Seeder
                 'pelanggan_id' => 1,
                 'penggunaan_kwh_id' => 2,
                 'bulan' => Carbon::now()->subMonths(1)->format('F'),
-                'tahun' => 2024,
+                'tahun' => 2025,
                 'jumlah_meter' => 100,
                 'status' => 1,
             ],
@@ -159,6 +159,7 @@ class DatabaseSeeder extends Seeder
                 'total_bayar' => 1000,
                 'tanggal_pembayaran' => '2025-01-21',
                 'user_id' => 1,
+                'created_at' => now(),
             ],
             [
                 'tagihan_kwh_id' => 2,
@@ -168,6 +169,7 @@ class DatabaseSeeder extends Seeder
                 'total_bayar' => 1000,
                 'tanggal_pembayaran' => '2025-01-21',
                 'user_id' => 1,
+                'created_at' => now(),
             ],
         ]);
 

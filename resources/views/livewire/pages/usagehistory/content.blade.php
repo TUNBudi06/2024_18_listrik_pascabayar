@@ -24,7 +24,7 @@ new class extends Component {
 
     public function showLiveWirePrint($data)
     {
-        Debugbar::info($data);
+//        Debugbar::info($data);
         $this->dispatch("modalInvoice", data: $data);
     }
 
