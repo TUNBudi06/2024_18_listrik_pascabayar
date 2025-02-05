@@ -70,7 +70,7 @@ new class extends Component {
         Cache::forget("listPenggunaanPelangganId");
 
         // Reload the billing data
-        $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Delete Billing Success', 'nextLink' => route('make-payment')])->to(Alert::class);
+        $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Delete Billing Success', 'link' => route('confirm-and-pay')])->to(Alert::class);
     }
 
     public function submitBtn()
@@ -92,7 +92,7 @@ new class extends Component {
             ]);
             $this->reset();
             $this->dispatch('closeModal')->self();
-            $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Add New Billing Success', 'nextLink' => route('make-payment')])->to(Alert::class);
+            $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Add New Billing Success', 'link' => route('confirm-and-pay')])->to(Alert::class);
         } catch (ValidationException $e) {
             throw $e;
             $this->dispatch('validationFailed')->self();
@@ -139,7 +139,7 @@ new class extends Component {
                                 :columns='$ColumnBilling'
                                 name="Billing">
                                 @foreach($dataPayment as $item)
-                                    <tr>
+                                    <tr wire:key="{{$item['id']}}">
                                         <td>{{$loop->iteration}}</td>
                                         <td>{{$item['pelanggan_k_w_h']['nama_pelanggan']}}</td>
                                         <td>{{$item['penggunaan_k_w_h']['bulan']}}</td>
@@ -160,7 +160,7 @@ new class extends Component {
                                         <td>
                                             <div class="d-flex gap-2">
                                                 <button class="btn btn-outline-warning"
-                                                        x-on:click="$wire.deleteTagihan({{$item['id']}})"
+                                                        wire:click="deleteTagihan({{$item['id']}})"
                                                         wire:confirm="Are you sure you want to delete this item?">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
