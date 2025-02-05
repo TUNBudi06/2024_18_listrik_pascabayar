@@ -74,27 +74,29 @@ class InfoBoxUser extends Component
     public function totalAllUsagesInYear()
     {
         $total = 0;
+        $date = Carbon::now()->subYear()->format('Y');
         $penggunaan = PenggunaanKWH::where('pelanggan_id', guardItems::checkGuardsIfLoginResultAuthClass()->user()->id)
-            ->where('tahun', date('Y'))->get()->toArray();
+            ->where('tahun', $date)->get()->toArray();
         array_reduce($penggunaan, function ($carry, $item) use (&$total) {
             $total += $item['meter_akhir'] - $item['meter_awal'];
         });
         $this->icon = 'fa fa-bolt';
         $this->count = $total.' KWH';
-        $this->message = 'Total Energy Usage in '.date('Y').' Of All Customers';
+        $this->message = 'Total Energy Usage in '.$date.' Of All Customers';
     }
 
     public function totalAllUsagesLastYear()
     {
         $total = 0;
+        $date = $this->tanggal->format('Y');
         $penggunaan = PenggunaanKWH::where('pelanggan_id', guardItems::checkGuardsIfLoginResultAuthClass()->user()->id)
-            ->where('tahun', $this->tanggal->subYear()->format('Y'))->get()->toArray();
+            ->where('tahun', $date)->get()->toArray();
         array_reduce($penggunaan, function ($carry, $item) use (&$total) {
             $total += $item['meter_akhir'] - $item['meter_awal'];
         });
         $this->icon = 'fa fa-bolt';
         $this->count = $total.' KWH';
-        $this->message = 'Total Energy Usage in '.$this->tanggal->subYear()->format('Y').' Of All Customers';
+        $this->message = 'Total Energy Usage in '.$date.' Of All Customers';
     }
 
     public function totalPaymentHasBeenPayout()
