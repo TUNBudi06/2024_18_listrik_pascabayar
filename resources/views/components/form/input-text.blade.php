@@ -1,5 +1,9 @@
-@props(['messages'=>  null,'value'=>'','name'=>'','placeholder'=>'','label'=>'','type'=>'text', 'wireModel'=>null])
+@props(['messages'=>  null,'value'=>'','name'=>'','label'=>'','type'=>'text', 'wireModel'=>null])
 
+
+@php
+    $placeholder = $placeholder ?? " ";
+@endphp
 
 @if($messages)
     <div class="form-group has-danger">
@@ -14,6 +18,6 @@
         <label class="form-label" for="{{$name}}">{{$label}}</label>
         <input type="{{$type}}" id="{{$name}}" name="{{$name}}"
                {{$attributes->merge(['class'=>'form-control'])}} @if($wireModel) wire:model="{{$wireModel}}"
-               @endif placeholder="John doe">
+               @endif placeholder="{{$placeholder}}">
     </div>
 @endif

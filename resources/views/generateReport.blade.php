@@ -24,10 +24,11 @@
         </div>
     </div>
     <div class="container">
-        <livewire:pages.makepayment.paymentspages/>
+        <livewire:pages.generetereport.content/>
     </div>
 
     <x-slot name="scriptJS">
+        <script src="{{asset('dist/js/pages/jquery.PrintArea.js')}}" type="text/JavaScript"></script>
         <script src="{{ asset('assets/node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js') }}"></script>
         <script src="{{ asset('assets/node_modules/datatables.net/lib/vfs_fonts.js') }}"></script>

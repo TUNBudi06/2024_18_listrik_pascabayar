@@ -19,7 +19,7 @@
                 <x-sidebar.nav-link icon=" fas fa-check-square" route="confirm-and-pay">
                     Pay&Confirm
                 </x-sidebar.nav-link>
-                <x-sidebar.nav-link icon="fas fa-newspaper">
+                <x-sidebar.nav-link icon="fas fa-newspaper" route="generate-report">
                     Generate Report
                 </x-sidebar.nav-link>
                 <x-sidebar.nav-link icon="fa fa-user" title="---  Master">
