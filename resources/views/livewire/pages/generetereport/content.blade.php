@@ -2,6 +2,7 @@
 
 use App\Models\Pelanggan;
 use App\Models\TagihanKWH;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
@@ -11,6 +12,7 @@ new class extends Component {
     public $startYear;
     #[Validate(rule: 'required_if:startYear,!null', as: "End Year")]
     public $endYear;
+    public $status;
     // End year for the report
     public $username;  // Selected user (or "all" for all users)
     public $users;     // List of users fetched from the database
@@ -31,8 +33,9 @@ new class extends Component {
     public function loadReport()
     {
         // Fetch cached data or query the database if not cached
-        $users = Cache::store('redis')->flexible("listReport:{$this->username}:{$this->startYear}:{$this->endYear}", [120, 240], function () {
+        $users = Cache::store('redis')->remember("listReport:{$this->username}:{$this->startYear}:{$this->endYear}:{$this->status}", 120, function () {
             return TagihanKWH::with(['PelangganKWH', 'PembayaranKWH', 'PenggunaanKWH'])
+                ->when($this->status, fn($query) => $query->where('status', $this->status))
                 ->when($this->username && $this->username != 'all', fn($query) => $query->where('pelanggan_id', $this->username))
                 ->when($this->startYear, fn($query) => $query->where('tahun', '>=', $this->startYear))
                 ->when($this->endYear, fn($query) => $query->where('tahun', '<=', $this->endYear))
@@ -59,6 +62,9 @@ new class extends Component {
             ->get()
             ->sum('pembayaran_k_w_h_count') ?? 'No Information';
 
+        $totalIncome = $users->sum(fn($event) => $event->status ? $event->pembayaran_k_w_h->total_tagihan : 0);
+        $totalAdminIncome = $users->sum(fn($event) => $event->status ? $event->pembayaran_k_w_h->biaya_admin : 0);
+
         $allUserInformation = [
             'total_customer' => $totalCustomers,
             'total_bill' => $totalBill,
@@ -71,6 +77,8 @@ new class extends Component {
             'name' => $name,
             'alamat' => $alamat,
             'no_kwh' => $no_kwh,
+            'totalIncome' => $totalIncome,
+            'totalAdminIncome' => $totalAdminIncome,
             'allInformation' => $allUserInformation,
         ];
 
@@ -106,6 +114,11 @@ new class extends Component {
                                                    type="number" wireModel="endYear"
                                                    :messages="$errors->get('endYear')[0] ?? null"/>
                             </div>
+                            <div class="border-3 p-3">
+                                <x-form.input-checkbox wireModel="status">
+                                    Status is Paid
+                                </x-form.input-checkbox>
+                            </div>
                             <div>
                                 <x-form.input-dropdown label="Select User" name="username" wireModel="username"
                                                        selected="selected">
@@ -120,8 +133,12 @@ new class extends Component {
                                 </x-form.input-dropdown>
                             </div>
                         </div>
-                        <x-form.button-submit label="Generate Report" class="btn btn-primary form-control">
+                        <x-form.button-submit label="Search" class="btn btn-primary form-control">
                             Search
+                        </x-form.button-submit>
+                        <x-form.button-submit label="Generate print" class="my-4 btn btn-info form-control"
+                                              x-on:click="$wire.dispatch('PrintPageArea')">
+                            Print Page
                         </x-form.button-submit>
                     </form>
                 </div>
@@ -145,7 +162,7 @@ new class extends Component {
                                             Payment: {{ $this->loadReport['allInformation']['total_payment'] }}
                                         @else
                                             @php
-                                                $address = $this->loadReport['alamat'] ?? 'Lorem ipsum dolor sit amet...';
+                                                $address = $this->loadReport['alamat'];
                                                 echo wordwrap($address, 36, "<br>\n", true);
                                             @endphp
                                         @endif
@@ -168,7 +185,7 @@ new class extends Component {
                                 </address>
                             </div>
                         </div>
-                        @if(is_null($this->username))
+                        @if(is_null($this->username) || $this->username == 'all')
                             <div class="col-md-12">
                                 <div class="table-responsive m-t-40" style="clear: both;">
                                     <h3 class="card-title">List Customer</h3>
@@ -189,8 +206,9 @@ new class extends Component {
                                                     <td>{{$loop->iteration}}</td>
                                                     <td>{{$item->nama_pelanggan}}</td>
                                                     <td class="text-end">{{$item->nomor_kwh}}</td>
-                                                    <td class="text-end">{{number_format($item->getTarif->tarif_perkwh)}}</td>
-                                                    <td class="text-end">{{$item->getTarif->daya}}</td>
+                                                    <td class="text-end">
+                                                        Rp. {{number_format($item->getTarif->tarif_perkwh,0,',','.')}}</td>
+                                                    <td class="text-end">{{$item->getTarif->daya}} VA</td>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -211,6 +229,7 @@ new class extends Component {
                                         <th class="text-end">Year</th>
                                         <th class="text-end">Total kWh</th>
                                         <th class="text-end">Total Payment</th>
+                                        <th class="text-end">Status</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -221,7 +240,15 @@ new class extends Component {
                                             <td class="text-end">{{$item['bulan']}}</td>
                                             <td class="text-end">{{$item['tahun']}}</td>
                                             <td class="text-end">{{$item['jumlah_meter']}}</td>
-                                            <td class="text-end">{{number_format($item['pembayaran_k_w_h']['total_tagihan'] ?? 0)}}</td>
+                                            <td class="text-end">
+                                                Rp. {{number_format($item['pembayaran_k_w_h']['total_tagihan'] ?? 0,0,',','.')}}</td>
+                                            <td class="text-end">
+                                                @if($item['status'])
+                                                    <span class="badge badge-info bg-success">success</span>
+                                                @else
+                                                    <span class="badge badge-danger bg-danger">N/A</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -230,21 +257,36 @@ new class extends Component {
                         </div>
                         <div class="col-md-12">
                             <div class="pull-right m-t-30 text-end">
-                                <p>Sub - Total amount: $13,848</p>
-                                <p>vat (10%) : $138 </p>
+                                Information Income:
+                                <p>Total All Paid Billing:
+                                    Rp. {{ number_format($this->loadReport['totalIncome'] ?? 0,0,',','.')}}</p>
+                                <p>Total Admin Income
+                                    : Rp. {{number_format($this->loadReport['totalAdminIncome'] ?? 0,0,',','.')}} </p>
                                 <hr>
-                                <h3><b>Total :</b> $13,986</h3>
+                                <h3><b>Total
+                                        :</b>
+                                    Rp. {{number_format((($this->loadReport['totalAdminIncome'] ?? 0) + ($this->loadReport['totalIncome'] ?? 0)) ?? 0,0,',','.')}}
+                                </h3>
                             </div>
                             <div class="clearfix"></div>
                             <hr>
-                            <div class="text-end">
-                                <button class="btn btn-danger text-white" type="submit"> Proceed to payment</button>
-                                <button id="print" class="btn btn-default btn-outline" type="button"><span><i
-                                            class="fa fa-print"></i> Print</span></button>
-                            </div>
                         </div>
                     </div>
                 </div>
+                @script
+                <script>
+                    $(document).ready(() => {
+                        $wire.on('PrintPageArea', () => {
+                            $('.printableArea').printArea({
+                                mode: 'iframe',
+                                popClose: false,
+                                retainAttr: ['class', 'id', 'style'],
+                                printDelay: 500
+                            });
+                        });
+                    });
+                </script>
+                @endscript
             </div>
         </div>
     </div>
