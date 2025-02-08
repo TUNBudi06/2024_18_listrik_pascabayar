@@ -47,14 +47,15 @@ new class extends Component {
             $data = TagihanKWH::find($this->id_data);
             $data->status = 1;
             $data->save();
+            unset($data)
 
             $data = PembayaranKWH::where('tagihan_kwh_id', $this->id_data)->first();
             $data->total_bayar = $this->total_bayar;
             $data->tanggal_pembayaran = now();
             $data->save();
 
-            Cache::forget("listPaymentPelangganId");
-            Cache::forget("listPenggunaanPelangganId");
+            Cache::forget("listPaymentPelangganId" . $data->pelanggan_id);
+            Cache::forget("listPenggunaanPelangganId" . $data->pelanggan_id);
 
             $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Payment Success'])->to(Alert::class);
             $this->redirect(route('electricBills'));

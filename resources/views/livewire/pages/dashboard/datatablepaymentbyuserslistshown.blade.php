@@ -16,10 +16,10 @@ new class extends Component {
     public function callData()
     {
         $idPelanggan = guardItems::checkGuardsIfLoginResultAuthClass()->id();
-        $payment = Cache::store('redis')->flexible('listPaymentPelangganId' . $idPelanggan, [60 * 60 * 24, 60 * 60 * 24 * 2], function () use ($idPelanggan) {
+        $payment = Cache::store('redis')->flexible('listPaymentPelangganId' . $idPelanggan, [60, 60 * 60 * 24 * 2], function () use ($idPelanggan) {
             return TagihanKWH::with(['PembayaranKWH', 'PelangganKWH'])->where('pelanggan_id', $idPelanggan)->orderBy('id', 'desc')->get();
         });
-        $penggunaan = Cache::store('redis')->flexible('listPenggunaanPelangganId' . $idPelanggan, [60 * 60 * 24, 60 * 60 * 24 * 2], function () use ($idPelanggan) {
+        $penggunaan = Cache::store('redis')->flexible('listPenggunaanPelangganId' . $idPelanggan, [60, 60 * 60 * 24 * 2], function () use ($idPelanggan) {
             return TagihanKWH::with(['PembayaranKWH', 'PelangganKWH'])->where('pelanggan_id', $idPelanggan)->orderBy('id', 'desc')->get();
         });
         $this->dataTable = collect(['payment' => $payment, "penggunaan" => $penggunaan]);

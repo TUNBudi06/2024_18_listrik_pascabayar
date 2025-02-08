@@ -62,8 +62,8 @@ new class extends Component {
             ->get()
             ->sum('pembayaran_k_w_h_count') ?? 'No Information';
 
-        $totalIncome = $users->sum(fn($event) => $event->status ? $event->pembayaran_k_w_h->total_tagihan : 0);
-        $totalAdminIncome = $users->sum(fn($event) => $event->status ? $event->pembayaran_k_w_h->biaya_admin : 0);
+        $totalIncome = $users->sum(fn($event) => $event->status ? $event->PembayaranKWH->total_tagihan : 0);
+        $totalAdminIncome = $users->sum(fn($event) => $event->status ? $event->PembayaranKWH->biaya_admin : 0);
 
         $allUserInformation = [
             'total_customer' => $totalCustomers,
@@ -136,11 +136,11 @@ new class extends Component {
                         <x-form.button-submit label="Search" class="btn btn-primary form-control">
                             Search
                         </x-form.button-submit>
-                        <x-form.button-submit label="Generate print" class="my-4 btn btn-info form-control"
-                                              x-on:click="$wire.dispatch('PrintPageArea')">
-                            Print Page
-                        </x-form.button-submit>
                     </form>
+                    <x-form.button-submit label="Generate print" class="my-4 btn btn-info form-control"
+                                          x-on:click="$wire.dispatch('PrintPageArea')">
+                        Print Page
+                    </x-form.button-submit>
                 </div>
             </div>
         </div>
@@ -257,15 +257,13 @@ new class extends Component {
                         </div>
                         <div class="col-md-12">
                             <div class="pull-right m-t-30 text-end">
-                                Information Income:
                                 <p>Total All Paid Billing:
-                                    Rp. {{ number_format($this->loadReport['totalIncome'] ?? 0,0,',','.')}}</p>
-                                <p>Total Admin Income
-                                    : Rp. {{number_format($this->loadReport['totalAdminIncome'] ?? 0,0,',','.')}} </p>
+                                    Rp. {{ number_format($this->loadReport['totalIncome'] ?? 0, 0, ',', '.') }}</p>
+                                <p>Total Admin Income:
+                                    Rp. {{ number_format($this->loadReport['totalAdminIncome'] ?? 0, 0, ',', '.') }}</p>
                                 <hr>
-                                <h3><b>Total
-                                        :</b>
-                                    Rp. {{number_format((($this->loadReport['totalAdminIncome'] ?? 0) + ($this->loadReport['totalIncome'] ?? 0)) ?? 0,0,',','.')}}
+                                <h3><b>Total:</b>
+                                    Rp. {{ number_format(($this->loadReport['totalIncome'] ?? 0) + ($this->loadReport['totalAdminIncome'] ?? 0), 0, ',', '.') }}
                                 </h3>
                             </div>
                             <div class="clearfix"></div>
@@ -281,7 +279,6 @@ new class extends Component {
                                 mode: 'iframe',
                                 popClose: false,
                                 retainAttr: ['class', 'id', 'style'],
-                                printDelay: 500
                             });
                         });
                     });

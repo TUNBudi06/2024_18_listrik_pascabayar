@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Actions;
 
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\users\guardItems;
 use Illuminate\Support\Facades\Session;
 
 class Logout
@@ -12,7 +12,7 @@ class Logout
      */
     public function __invoke(): void
     {
-        Auth::guard('web')->logout();
+        guardItems::checkGuardsIfLoginResultAuthClass()->logout();
 
         Session::invalidate();
         Session::regenerateToken();

@@ -13,6 +13,7 @@ Route::middleware([IfLoginUser::class])->group(function () {
     Route::view('Payment-Management', 'makePayment')->name('make-payment');
     Route::view('PaymendAndConfirmation', 'PayAndConfirm')->name('confirm-and-pay');
     Route::view('generate-report', 'generateReport')->name('generate-report');
+    Route::view('listTariff', 'tariffPrice')->name('listTariff');
 });
 
 require __DIR__.'/auth.php';
