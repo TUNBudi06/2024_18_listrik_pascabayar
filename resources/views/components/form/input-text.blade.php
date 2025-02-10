@@ -7,7 +7,9 @@
 
 @if($messages)
     <div class="form-group has-danger">
-        <label class="form-label" for="{{$name}}">{{$label}}</label>
+        @if($label)
+            <label class="form-label" for="{{$name}}">{{$label}}</label>
+        @endif
         <input type="{{$type}}" id="{{$name}}" name="{{$name}}"
                {{$attributes->merge(['class'=>'form-control form-control-danger'])}}
                @if($wireModel) wire:model="{{$wireModel}}" @endif placeholder="{{$placeholder}}">
@@ -15,7 +17,9 @@
     </div>
 @else
     <div class="form-group">
-        <label class="form-label" for="{{$name}}">{{$label}}</label>
+        @if($label)
+            <label class="form-label" for="{{$name}}">{{$label}}</label>
+        @endif
         <input type="{{$type}}" id="{{$name}}" name="{{$name}}"
                {{$attributes->merge(['class'=>'form-control'])}} @if($wireModel) wire:model="{{$wireModel}}"
                @endif placeholder="{{$placeholder}}">

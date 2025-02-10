@@ -24,6 +24,7 @@
     <script src="{{asset('assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
 
     <!-- Scripts -->
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="skin-default-dark fixed-layout">
@@ -60,5 +61,6 @@
 <script src="{{asset('dist/js/custom.min.js')}}"></script>
 @stack('scripts')
 {{$scriptJS ?? ''}}
+@livewireScriptConfig
 </body>
 </html>
