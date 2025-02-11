@@ -22,9 +22,49 @@ new class extends Component {
         try {
             $this->daya = str_replace(' VA', '', $this->daya);
             $this->validate();
+
+            if ($this->isEdit) {
+                $tariff = TarifKWH::findOrFail($this->tarif_id);
+                Debugbar::info($tariff);
+                $tariff->daya = $this->daya;
+                $tariff->tarif_perkwh = $this->tarif_perkwh;
+                $tariff->save();
+                $this->dispatch('AlertNotify', ['type' => 'success', 'message' => 'Tariff Updated']);
+                $this->resetForm();
+                $this->loadTariff();
+            } else {
+                TarifKWH::create([
+                    'daya' => $this->daya,
+                    'tarif_perkwh' => $this->tarif_perkwh
+                ]);
+                $this->dispatch('AlertNotify', ['type' => 'success', 'message' => 'Tariff Created']);
+                $this->resetForm();
+                $this->loadTariff();
+            }
         } finally {
-            $this->daya = $this->daya . " VA";
+            if ($this->daya) {
+                $this->daya = $this->daya . " VA";
+            };
         }
+    }
+
+    public function editTariff($id)
+    {
+        $this->isEdit = true;
+        $this->tarif_id = $id;
+        $tariff = TarifKWH::find($id);
+        $this->daya = $tariff->daya . " VA";
+        $this->tarif_perkwh = $tariff->tarif_perkwh;
+        $this->dispatch('openModal')->self();
+    }
+
+    public function deleteTariff($id)
+    {
+        $tariff = TarifKWH::find($id);
+        $tariff->delete();
+
+        $this->dispatch('AlertNotify', ['type' => 'success', 'message' => 'Tariff Deleted']);
+        $this->loadTariff();
     }
 
     public function resetForm()
@@ -32,11 +72,21 @@ new class extends Component {
         $this->reset(['daya', 'isEdit', 'tarif_perkwh', 'tarif_id']);
     }
 
+    public function AddModal()
+    {
+        try {
+            if ($this->isEdit) {
+                $this->resetForm();
+            }
+        } finally {
+            $this->dispatch('openModal')->self();
+        }
+    }
+
     public function loadTariff()
     {
         $data = TarifKWH::withCount(['getPelanggan'])->get();
         $this->dataTable = $data;
-        Debugbar::info($data);
     }
 
     public function mount()
@@ -50,7 +100,7 @@ new class extends Component {
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title waves-effect">Add Tariff Price</h4>
-                <button class="btn btn-info form-control" x-on:click="$wire.dispatch('openModal')">Add Price</button>
+                <button class="btn btn-info form-control" wire:click="AddModal()">Add Price</button>
             </div>
         </div>
     </div>
@@ -73,14 +123,15 @@ new class extends Component {
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $value->daya }} Va</td>
-                                <td>Rp. {{ number_format($value->tarif_perkwh,2,',','.') }}</td>
+                                <td x-clipboard>Rp. {{ number_format($value->tarif_perkwh,2,',','.') }}</td>
                                 <td>
                                     <button class="btn btn-info"
-                                            x-on:click="$wire.dispatch('openModal', {{ $value->id }})">
+                                            wire:click="editTariff({{$value->id}})">
                                         Edit
                                     </button>
                                     <button class="btn btn-danger"
-                                            x-on:click="$wire.dispatch('deleteTariff', {{ $value->id }})">
+                                            wire:click="deleteTariff({{ $value->id }})"
+                                            wire:confirm="Are you sure to delete this Tariff? all user associated with this will be deleted ({{ $value->get_pelanggan_count ?? 0 }} Users) ">
                                         Delete
                                     </button>
                                 </td>
@@ -104,7 +155,7 @@ new class extends Component {
                     <div class="modal-header">
                         <h3 class="modal-title">
                             @if($isEdit)
-                                Edit Tariff Price
+                                (Edit Tariff Price)
                             @else
                                 Add new Price
                             @endif</h3>
