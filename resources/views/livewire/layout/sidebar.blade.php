@@ -26,8 +26,8 @@
                     Generate Report
                 </x-sidebar.nav-link>
             @endif
-            <x-sidebar.nav-link icon="fa fa-user" title="---  Master">
-                Manage User
+            <x-sidebar.nav-link icon="fa fa-user" title="---  Master" route="customer-management">
+                Manage Customer
             </x-sidebar.nav-link>
             <x-sidebar.nav-link icon="fa fa-user">
                 Manage Admin
