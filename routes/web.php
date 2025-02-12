@@ -15,6 +15,7 @@ Route::middleware([IfLoginUser::class])->group(function () {
     Route::view('generate-report', 'generateReport')->name('generate-report');
     Route::view('listTariff', 'tariffPrice')->name('listTariff');
     Route::view('CustomerList', 'customerManagement')->name('customer-management');
+    Route::view('Admin-Management', 'adminManagement')->name('admin-management');
 });
 
 require __DIR__.'/auth.php';

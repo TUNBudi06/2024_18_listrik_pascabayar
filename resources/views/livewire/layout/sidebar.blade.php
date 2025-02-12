@@ -29,7 +29,7 @@
             <x-sidebar.nav-link icon="fa fa-user" title="---  Master" route="customer-management">
                 Manage Customer
             </x-sidebar.nav-link>
-            <x-sidebar.nav-link icon="fa fa-user">
+            <x-sidebar.nav-link icon="fa fa-user" route="admin-management">
                 Manage Admin
             </x-sidebar.nav-link>
         </x-sidebar.navigation>

@@ -19,7 +19,7 @@ return new class extends Migration
         });
 
         Schema::table('pelanggans', function (Blueprint $table) {
-            $table->foreignId('tarif_kwh_id')->constrained('tarif_kwh');
+            $table->foreignId('tarif_kwh_id')->constrained('tarif_kwh')->cascadeOnDelete();
         });
     }
 

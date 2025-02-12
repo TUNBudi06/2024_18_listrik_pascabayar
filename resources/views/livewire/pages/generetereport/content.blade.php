@@ -33,7 +33,7 @@ new class extends Component {
     public function loadReport()
     {
         // Fetch cached data or query the database if not cached
-        $users = Cache::store('redis')->remember("listReport:{$this->username}:{$this->startYear}:{$this->endYear}:{$this->status}", 120, function () {
+        $users = Cache::store('redis')->flexible("listReport:{$this->username}:{$this->startYear}:{$this->endYear}:{$this->status}", [60, 120], function () {
             return TagihanKWH::with(['PelangganKWH', 'PembayaranKWH', 'PenggunaanKWH'])
                 ->when($this->status, fn($query) => $query->where('status', $this->status))
                 ->when($this->username && $this->username != 'all', fn($query) => $query->where('pelanggan_id', $this->username))

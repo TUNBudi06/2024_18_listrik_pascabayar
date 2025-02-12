@@ -7,7 +7,6 @@ window.Alpine = Alpine;
 Alpine.plugin(collapse)
 
 Alpine.directive('clipboard', (el) => {
-    console.log(el)
     let text = el.textContent
 
     el.addEventListener('click', () => {
