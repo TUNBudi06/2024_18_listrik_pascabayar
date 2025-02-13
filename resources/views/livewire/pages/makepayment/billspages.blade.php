@@ -35,7 +35,6 @@ new class extends Component {
     protected function loadBilling()
     {
         $data = TagihanKWH::with(['PelangganKWH', 'PenggunaanKWH'])
-            ->where('pelanggan_id', guardItems::checkGuardsIfLoginResultId())
             ->get()
             ->values()
             ->toArray();
@@ -147,7 +146,7 @@ new class extends Component {
                                         <td>{{ $table['penggunaan_k_w_h']['meter_awal'] }}</td>
                                         <td>{{ $table['penggunaan_k_w_h']['meter_akhir'] }}</td>
                                         <td><span>{{ $table['jumlah_meter'] }}</span> kWh</td>
-                                        <td>{{ $table['created_at'] }}</td>
+                                        <td>{{ \Illuminate\Support\Carbon::createFromTimeString($table['created_at']) }}</td>
                                         <td>
                                             <button class="btn btn-outline-danger text-black"
                                                     wire:click="deleteTagihan({{ $table['id'] }})"

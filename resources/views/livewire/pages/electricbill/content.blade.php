@@ -47,7 +47,7 @@ new class extends Component {
             $data = TagihanKWH::find($this->id_data);
             $data->status = 1;
             $data->save();
-            unset($data)
+            unset($data);
 
             $data = PembayaranKWH::where('tagihan_kwh_id', $this->id_data)->first();
             $data->total_bayar = $this->total_bayar;

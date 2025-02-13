@@ -26,12 +26,14 @@
                     Generate Report
                 </x-sidebar.nav-link>
             @endif
-            <x-sidebar.nav-link icon="fa fa-user" title="---  Master" route="customer-management">
-                Manage Customer
-            </x-sidebar.nav-link>
-            <x-sidebar.nav-link icon="fa fa-user" route="admin-management">
-                Manage Admin
-            </x-sidebar.nav-link>
+            @if(\App\Http\Controllers\users\guardItems::checkGuardsIfLoginResultAuthClass()->user()->adminLevel()->first()->id == 1)
+                <x-sidebar.nav-link icon="fa fa-user" title="---  Master" route="customer-management">
+                    Manage Customer
+                </x-sidebar.nav-link>
+                <x-sidebar.nav-link icon="fa fa-user" route="admin-management">
+                    Manage Admin
+                </x-sidebar.nav-link>
+            @endif
         </x-sidebar.navigation>
     </div>
 </aside>
