@@ -14,7 +14,7 @@ form(LoginForm::class, 'login');
 $submitLogin = function () {
     $this->validate();
     $this->login->authenticate();
-    $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Login Success','link'=>route('dashboard')])->to(Alert::class);
+    $this->dispatch('AlertNotify', ['icon' => 'success', 'message' => 'Login Success', 'link' => route('dashboard')])->to(Alert::class);
 //    $this->redirectIntended(default: route('dashboard', absolute: false));
 };
 ?>
@@ -25,9 +25,9 @@ $submitLogin = function () {
             <form class="form-horizontal form-material" wire:submit="submitLogin">
                 <h3 class="text-center m-b-20">Sign In</h3>
                 <x-form.input-text name="username" label="Username" placeholder="Username" required autofocus
-                                   wireModel="login.username" :messages="$errors->get('login.username')[0] ?? null"/>
+                                   wireModel="login.username"/>
                 <x-form.input-text name="password" label="Password" placeholder="Password" wireModel="login.password"
-                                   :messages="$errors->get('login.password')[0] ?? null" type="password"/>
+                                   type="password"/>
                 <div class="d-flex no-block align-items-center">
                     <x-form.input-checkbox name="remember" wireModel="login.remember">Remember Me?
                     </x-form.input-checkbox>
@@ -44,7 +44,7 @@ $submitLogin = function () {
                         Don't have an account?
                         <a href="{{route('register')}}"
                            class="text-info m-l-5"
-                           >
+                        >
                             <b>
                                 Sign Up
                             </b>

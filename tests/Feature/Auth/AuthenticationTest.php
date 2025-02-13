@@ -24,15 +24,19 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $component = Volt::test('pages.auth.login')
-            ->set('form.email', $user->email)
-            ->set('form.password', 'password');
+        $this->assertDatabaseHas('users', [
+            'username' => $user->username,
+        ]);
 
-        $component->call('login');
+        $component = Volt::test('pages.auth.login')
+            ->set('login.username', $user->username)
+            ->set('login.password', '12345678');
+
+        $this->assertEquals($component->get('login.username'), $user->username);
+        $component->call('submitLogin');
 
         $component
-            ->assertHasNoErrors()
-            ->assertRedirect(route('dashboard', absolute: false));
+            ->assertHasNoErrors();
 
         $this->assertAuthenticated();
     }
@@ -41,11 +45,16 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $component = Volt::test('pages.auth.login')
-            ->set('form.email', $user->email)
-            ->set('form.password', 'wrong-password');
+        $this->assertDatabaseHas('users', [
+            'username' => $user->username,
+        ]);
 
-        $component->call('login');
+        $component = Volt::test('pages.auth.login')
+            ->set('login.username', $user->username)
+            ->set('login.password', 'password');
+
+        $this->assertEquals($component->get('login.username'), $user->username);
+        $component->call('submitLogin');
 
         $component
             ->assertHasErrors()
@@ -58,13 +67,22 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->actingAs($user);
+        $this->assertDatabaseHas('users', [
+            'username' => $user->username,
+        ]);
+
+        $component = Volt::test('pages.auth.login')
+            ->set('login.username', $user->username)
+            ->set('login.password', '12345678');
+
+        $this->assertEquals($component->get('login.username'), $user->username);
+        $component->call('submitLogin');
 
         $response = $this->get('/dashboard');
 
         $response
             ->assertOk()
-            ->assertSeeVolt('layout.navigation');
+            ->assertSeeVolt('layout.app');
     }
 
     public function test_users_can_logout(): void
