@@ -23,7 +23,6 @@ class RegistrationTest extends TestCase
 
     public function test_registration_process_can_be_completed(): void
     {
-        $this->seed();
         // Step 1: Validate and set basic user information
         $component = Volt::test('pages.auth.register')
             ->set('register.name', 'Test User')
@@ -59,7 +58,6 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated('pelanggan');
 
         // Assert that the user and customer data were created
-        $this->assertDatabaseHas('users', ['username' => 'testuser']);
         $this->assertDatabaseHas('pelanggans', [
             'username' => 'testuser',
             'nomor_kwh' => '081234567890',

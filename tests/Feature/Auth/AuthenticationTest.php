@@ -11,6 +11,8 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_login_screen_can_be_rendered(): void
     {
         $response = $this->get('/login');
@@ -65,7 +67,6 @@ class AuthenticationTest extends TestCase
 
     public function test_navigation_menu_can_be_rendered_as_admin(): void
     {
-        $this->seed();
         $user = User::where('username', 'tunbudi06')->first();
 
         $this->actingAs($user);
@@ -79,7 +80,6 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout(): void
     {
-        $this->seed();
         $user = User::where('username', 'tunbudi06')->first();
 
         $this->actingAs($user);
