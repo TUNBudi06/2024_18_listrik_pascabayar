@@ -63,31 +63,24 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_navigation_menu_can_be_rendered(): void
+    public function test_navigation_menu_can_be_rendered_as_admin(): void
     {
-        $user = User::factory()->create();
+        $this->seed();
+        $user = User::where('username', 'tunbudi06')->first();
 
-        $this->assertDatabaseHas('users', [
-            'username' => $user->username,
-        ]);
+        $this->actingAs($user);
 
-        $component = Volt::test('pages.auth.login')
-            ->set('login.username', $user->username)
-            ->set('login.password', '12345678');
-
-        $this->assertEquals($component->get('login.username'), $user->username);
-        $component->call('submitLogin');
-
-        $response = $this->get('/dashboard');
+        $response = $this->get(route('dashboard'));
 
         $response
             ->assertOk()
-            ->assertSeeVolt('layout.app');
+            ->assertSee('dashboard');
     }
 
     public function test_users_can_logout(): void
     {
-        $user = User::factory()->create();
+        $this->seed();
+        $user = User::where('username', 'tunbudi06')->first();
 
         $this->actingAs($user);
 

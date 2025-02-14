@@ -79,6 +79,6 @@ class User extends Authenticatable
 
     public function adminLevel()
     {
-        return $this->belongsTo(AdminLevel::class, 'admin_level_id', 'id');
+        return $this->hasOne(AdminLevel::class, 'id', 'admin_level_id');
     }
 }

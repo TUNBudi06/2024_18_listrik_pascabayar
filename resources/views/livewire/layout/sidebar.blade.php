@@ -26,7 +26,10 @@
                     Generate Report
                 </x-sidebar.nav-link>
             @endif
-            @if(\App\Http\Controllers\users\guardItems::checkGuardsIfLoginResultAuthClass()->user()->adminLevel()->first()->id == 1)
+            @php
+                $user = \App\Http\Controllers\users\guardItems::checkGuardsIfLoginResultAdminTypeId();
+            @endphp
+            @if($user == 1)
                 <x-sidebar.nav-link icon="fa fa-user" title="---  Master" route="customer-management">
                     Manage Customer
                 </x-sidebar.nav-link>

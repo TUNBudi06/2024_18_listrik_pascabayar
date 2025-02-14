@@ -18,6 +18,17 @@ class guardItems extends Controller
         return false;
     }
 
+    public static function checkGuardsIfLoginResultAdminTypeId(): ?int
+    {
+        $auth = null;
+        if (auth()->guard('admin')->check()) {
+            $auth = Auth::guard('admin');
+        }
+
+        return $auth?->user()->adminLevel()->first()->id;
+
+    }
+
     public static function checkGuardsIfLoginResultId()
     {
         if (auth()->guard('admin')->check()) {
