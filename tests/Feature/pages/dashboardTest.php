@@ -12,6 +12,8 @@ class dashboardTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     /**
      * A basic test example.
      */
@@ -23,7 +25,6 @@ class dashboardTest extends TestCase
 
     public function test_can_see_dashboard_in_admin_mode(): void
     {
-        $this->seed();
         $user = User::where('username', 'tunbudi06')->first();
         $this->actingAs($user);
         $response = $this->get('/dashboard');
@@ -34,7 +35,6 @@ class dashboardTest extends TestCase
 
     public function test_can_see_dashboard_in_customer_mode(): void
     {
-        $this->seed();
         $user = Pelanggan::where('username', 'pelanggan')->first();
         $this->actingAs($user, 'pelanggan');
         $response = $this->get('/dashboard');
@@ -48,7 +48,6 @@ class dashboardTest extends TestCase
      */
     public function test_can_see_info_box_in_pelanggan_mode(): void
     {
-        $this->seed();
         $user = Pelanggan::where('username', 'pelanggan')->first();
         $this->actingAs($user, 'pelanggan');
         $response = $this->get('/dashboard');
@@ -58,7 +57,6 @@ class dashboardTest extends TestCase
 
     public function test_can_render_info_box(): void
     {
-        $this->seed();
         $user = Pelanggan::where('username', 'pelanggan')->first();
         $this->actingAs($user, 'pelanggan');
 
