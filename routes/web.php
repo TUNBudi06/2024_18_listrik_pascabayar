@@ -3,7 +3,9 @@
 use App\Http\Middleware\IfLoginUser;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 Route::middleware([IfLoginUser::class])->group(function () {
     Route::view('dashboard', 'dashboard')

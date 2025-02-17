@@ -77,7 +77,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function adminLevel()
+    public function adminLevel(): ?\Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(AdminLevel::class, 'id', 'admin_level_id');
     }
