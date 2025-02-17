@@ -36,6 +36,10 @@ jobs:
       - name: Install Node.js Dependencies
         run: npm install
 
+      # Run Laravel npm build
+      - name: Run Laravel npm build
+        run: npm run build
+
       # Generate application key
       - name: Generate key
         run: php artisan key:generate
