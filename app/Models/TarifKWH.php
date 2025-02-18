@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TarifKWH extends Model
 {
+    use HasFactory;
+
     protected $table = 'tarif_kwh';
 
     protected $fillable = ['daya', 'tarif_perkwh'];

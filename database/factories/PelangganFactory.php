@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\TarifKWH;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -24,10 +26,13 @@ class PelangganFactory extends Factory
     {
         return [
             'username' => $this->faker->unique()->userName(),
-            'password' => static::$password ??= Hash::make('12345678'),
+            'password' => Hash::make('12345678'),
             'nama_pelanggan' => $this->faker->name(),
             'alamat' => $this->faker->address(),
             'nomor_kwh' => $this->faker->unique()->randomNumber(8),
+            'tarif_kwh_id' => TarifKWH::inRandomOrder()->first()?->id ?? 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }

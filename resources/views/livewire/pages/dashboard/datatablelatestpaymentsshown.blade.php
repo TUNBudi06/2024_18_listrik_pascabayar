@@ -13,9 +13,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->dataTable = Cache::store('redis')->flexible('PelangganPaymentList', [60 * 60 * 24, 60 * 60 * 24 * 2], function () {
-            return PembayaranKWH::with(['pelangganKWH', 'tagihanKWH'])->orderBy('tanggal_pembayaran', 'desc')->get();
-        });;
+        $this->dataTable = PembayaranKWH::with(['pelangganKWH', 'tagihanKWH'])->orderBy('tanggal_pembayaran', 'desc')->get();
     }
 
     public function placeholder()

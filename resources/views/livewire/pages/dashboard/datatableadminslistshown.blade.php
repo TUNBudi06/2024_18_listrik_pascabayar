@@ -13,9 +13,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->dataTable = Cache::store('redis')->flexible('AdminsList', [60 * 60 * 24, 60 * 60 * 24 * 2], function () {
-            return User::with(['adminLevel'])->orderBy('name')->get();
-        });;
+        $this->dataTable = User::with(['adminLevel'])->orderBy('name')->get();
     }
 
     public function placeholder()

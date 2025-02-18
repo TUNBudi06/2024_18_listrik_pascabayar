@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Pelanggan;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PenggunaanKWH>
@@ -17,10 +19,13 @@ class PenggunaanKWHFactory extends Factory
     public function definition(): array
     {
         return [
+            'pelanggan_id' => Pelanggan::inRandomOrder()->first()->id, // Sesuaikan dengan jumlah pelanggan
             'bulan' => $this->faker->monthName(),
             'tahun' => $this->faker->year(),
-            'meter_awal' => $this->faker->randomNumber(5),
-            'meter_akhir' => $this->faker->randomNumber(5),
+            'meter_awal' => $this->faker->numberBetween(100, 500),
+            'meter_akhir' => $this->faker->numberBetween(500, 1000),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }
