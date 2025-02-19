@@ -32,7 +32,7 @@ class AuthenticationTest extends TestCase
 
         $component = Volt::test('pages.auth.login')
             ->set('login.username', $user->username)
-            ->set('login.password', '12345678');
+            ->set('login.password', 'password123');
 
         $this->assertEquals($component->get('login.username'), $user->username);
         $component->call('submitLogin');
@@ -67,7 +67,7 @@ class AuthenticationTest extends TestCase
 
     public function test_navigation_menu_can_be_rendered_as_admin(): void
     {
-        $user = User::where('username', 'tunbudi06')->first();
+        $user = User::where('username', 'admin')->first();
 
         $this->actingAs($user);
 
@@ -80,7 +80,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout(): void
     {
-        $user = User::where('username', 'tunbudi06')->first();
+        $user = User::where('username', 'admin')->first();
 
         $this->actingAs($user);
 

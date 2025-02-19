@@ -53,7 +53,10 @@ class InfoBoxUser extends Component
         $kwh = 0;
         $getKwh = TagihanKWH::where('pelanggan_id', guardItems::checkGuardsIfLoginResultAuthClass()->user()->id)->with(['PembayaranKWH'])
             ->where('bulan', Carbon::now()->subMonth()->format('F'))
-            ->where('tahun', Carbon::now()->subMonth()->format('Y'))
+            ->when(Carbon::now()->subMonth()->format('Y') == Carbon::now()->format('Y'),
+                fn ($query) => $query->where('tahun', Carbon::now()->format('Y')))
+            ->when(Carbon::now()->subMonth()->format('Y') != Carbon::now()->format('Y'),
+                fn ($query) => $query->where('tahun', Carbon::now()->subYear()->format('Y')))
             ->first();
         //        \Debugbar::info($getKwh);
         $kwh = ($getKwh->jumlah_meter ?? 0).' KWH';
@@ -75,8 +78,7 @@ class InfoBoxUser extends Component
     {
         $total = 0;
         $date = Carbon::now()->subYear()->format('Y');
-        $penggunaan = PenggunaanKWH::where('pelanggan_id', guardItems::checkGuardsIfLoginResultAuthClass()->user()->id)
-            ->where('tahun', $date)->get()->toArray();
+        $penggunaan = PenggunaanKWH::where('tahun', $date)->get()->toArray();
         array_reduce($penggunaan, function ($carry, $item) use (&$total) {
             $total += $item['meter_akhir'] - $item['meter_awal'];
         });
@@ -89,8 +91,7 @@ class InfoBoxUser extends Component
     {
         $total = 0;
         $date = $this->tanggal->format('Y');
-        $penggunaan = PenggunaanKWH::where('pelanggan_id', guardItems::checkGuardsIfLoginResultAuthClass()->user()->id)
-            ->where('tahun', $date)->get()->toArray();
+        $penggunaan = PenggunaanKWH::where('tahun', $date)->get()->toArray();
         array_reduce($penggunaan, function ($carry, $item) use (&$total) {
             $total += $item['meter_akhir'] - $item['meter_awal'];
         });

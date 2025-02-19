@@ -25,7 +25,7 @@ class dashboardTest extends TestCase
 
     public function test_can_see_dashboard_in_admin_mode(): void
     {
-        $user = User::where('username', 'tunbudi06')->first();
+        $user = User::where('username', 'admin')->first();
         $this->actingAs($user);
         $response = $this->get('/dashboard');
         $response
@@ -35,7 +35,7 @@ class dashboardTest extends TestCase
 
     public function test_can_see_dashboard_in_customer_mode(): void
     {
-        $user = Pelanggan::where('username', 'pelanggan')->first();
+        $user = Pelanggan::inRandomOrder()->first();
         $this->actingAs($user, 'pelanggan');
         $response = $this->get('/dashboard');
         $response
@@ -48,7 +48,7 @@ class dashboardTest extends TestCase
      */
     public function test_can_see_info_box_in_pelanggan_mode(): void
     {
-        $user = Pelanggan::where('username', 'pelanggan')->first();
+        $user = Pelanggan::inRandomOrder()->first();
         $this->actingAs($user, 'pelanggan');
         $response = $this->get('/dashboard');
         $response
@@ -57,7 +57,7 @@ class dashboardTest extends TestCase
 
     public function test_can_render_info_box(): void
     {
-        $user = Pelanggan::where('username', 'pelanggan')->first();
+        $user = Pelanggan::inRandomOrder()->first();
         $this->actingAs($user, 'pelanggan');
 
         $list = ['totalUsageThisYearNow', 'totalUsageYearBefore', 'paymentAndKWHLastMonth', 'tarifKWHShown',

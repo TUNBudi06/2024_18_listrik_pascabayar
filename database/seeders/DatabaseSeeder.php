@@ -203,17 +203,9 @@ class DatabaseSeeder extends Seeder
             'username' => 'bank',
             'admin_level_id' => 2, // Bank
         ]);
-
-        // Buat tarif KWH
         TarifKWH::factory()->count(11)->create();
-
-        // Buat 50 pelanggan
         Pelanggan::factory(50)->create();
-
-        // Buat 600 tagihan KWH
         TagihanKWH::factory(600)->create();
-
-        // Buat 300 pembayaran KWH (50% dari tagihan)
-        PembayaranKWH::factory(400)->create();
+        PembayaranKWH::factory(600)->create();
     }
 }
