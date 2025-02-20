@@ -67,7 +67,7 @@ new class extends Component {
         }
     }
 
-    public function mount()
+    public function boot()
     {
         $this->loadPayment();
     }
@@ -117,55 +117,51 @@ new class extends Component {
                  aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="livewireModalLabel">Modal Heading</h4>
-                            <button type="button"
-                                    class="btn-close"
+                        <form class="form-horizontal form-bordered" wire:submit="submitBtn()">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="livewireModalLabel">Modal Heading</h4>
+                                <button type="button" data-bs-dismiss="modal"
+                                        class="btn-close"
 
-                                    aria-hidden="true"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title bg-blend-darken">
-                                        Payment Rp.
-                                        <span x-text="$store.RowData.headerModal"></span>
-                                        <form class="form-horizontal form-bordered" wire:submit="submitBtn()">
+                                        aria-hidden="true"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title bg-blend-darken">
+                                            Payment Rp.
+                                            <span x-text="$store.RowData.headerModal"></span>
                                             <div class="row">
                                                 <div class="col-5">
                                                     <input type="hidden" wire:model="id_data">
                                                     <x-form.input-text name="UangBayar" label="Pay your Money"
                                                                        placeholder="140000"
                                                                        type="number"
-                                                                       wireModel="total_bayar"
-                                                                       :messages="$errors->get('total_bayar')[0] ?? null"/>
+                                                                       wireModel="total_bayar"/>
                                                 </div>
                                                 <div class="col-5">
                                                     <x-form.input-text name="UangBayar" label="Your Current Bill"
                                                                        placeholder="140000"
                                                                        type="number"
                                                                        wireModel="total_tagihan"
-                                                                       :messages="$errors->get('total_tagihan')[0] ?? null"
                                                                        readonly/>
                                                 </div>
-                                                <div class="col-4">
-                                                    <x-form.button-submit class="btn btn-info mt-3">
-                                                        Submit
-                                                    </x-form.button-submit>
-                                                </div>
                                             </div>
-                                        </form>
-                                    </h4>
+                                        </h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button"
-                                    class="btn btn-info waves-effect text-white"
-                            >
-                                Close
-                            </button>
-                        </div>
+                            <div class="modal-footer">
+                                <x-form.button-submit class="btn btn-info">
+                                    Submit
+                                </x-form.button-submit>
+                                <button type="button" data-bs-dismiss="modal"
+                                        class="btn btn-info waves-effect text-white"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -186,22 +182,49 @@ new class extends Component {
         modal.show();
     });
 
-    Alpine.store('RowData', {
-        listJson: @json($dataTable),
-        headerModal: 0,
+    $watch('$wire.dataTable', () => {
+        console.log($wire.dataTable);
+    });
 
+    Alpine.store('RowData', {
+        headerModal: 0,
+        listJson: {!! json_encode($dataTable) !!}, // Ensure this is an array or object
 
         toggleModalOpen(id) {
             const options = {style: 'currency', currency: 'IDR'};
-            const idData = this.listJson.find(item => item.id === id);
 
-            console.log(idData);
-            this.headerModal = (idData['pembayaran_k_w_h']['total_tagihan'] + idData['pembayaran_k_w_h']['biaya_admin']).toLocaleString(options);
-            $wire.total_tagihan = idData['pembayaran_k_w_h']['total_tagihan'] + idData['pembayaran_k_w_h']['biaya_admin'];
+            // Ensure listJson is an array
+            let listArray = this.listJson;
+            if (!Array.isArray(listArray)) {
+                // Convert object to array if necessary
+                listArray = Object.values(listArray);
+            }
+
+            // Find the item with the matching id
+            const idData = listArray.find(item => item.id === id);
+
+            if (!idData) {
+                console.error('Item with id', id, 'not found');
+                return;
+            }
+
+            // Ensure pembayaran_k_w_h is defined and has the required properties
+            if (!idData.pembayaran_k_w_h || typeof idData.pembayaran_k_w_h.total_tagihan !== 'number' || typeof idData.pembayaran_k_w_h.biaya_admin !== 'number') {
+                console.error('pembayaran_k_w_h data is missing or invalid:', idData.pembayaran_k_w_h);
+                return;
+            }
+
+            // Calculate and format the total bill
+            const totalBill = idData.pembayaran_k_w_h.total_tagihan + idData.pembayaran_k_w_h.biaya_admin;
+            this.headerModal = totalBill.toLocaleString(options);
+
+            // Update Livewire properties
+            $wire.total_tagihan = totalBill;
             $wire.id_data = id;
 
-            modal.show()
+            // Show the modal
+            modal.show();
         }
-    })
+    });
 </script>
 @endscript

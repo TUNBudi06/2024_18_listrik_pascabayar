@@ -26,6 +26,10 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder<static>|AdminLevel whereUpdatedAt($value)
      *
      * @mixin \Eloquent
+     *
+     * @property-read \App\Models\TFactory|null $use_factory
+     *
+     * @method static \Database\Factories\AdminLevelFactory factory($count = null, $state = [])
      */
     class AdminLevel extends \Eloquent {}
 }
@@ -190,6 +194,10 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder<static>|TarifKWH whereUpdatedAt($value)
      *
      * @mixin \Eloquent
+     *
+     * @property-read \App\Models\TFactory|null $use_factory
+     *
+     * @method static \Database\Factories\TarifKWHFactory factory($count = null, $state = [])
      */
     class TarifKWH extends \Eloquent {}
 }

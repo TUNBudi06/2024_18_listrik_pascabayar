@@ -23,7 +23,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'username' => $this->faker->unique()->userName(),
-            'password' => static::$password ??= Hash::make('password123'),
+            'password' => static::$password ??= Hash::make('12345678'),
             'remember_token' => Str::random(10),
             'admin_level_id' => AdminLevel::inRandomOrder()->first()?->id ?? 1,
             'created_at' => Carbon::now(),

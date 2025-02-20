@@ -13,10 +13,9 @@
                 </x-sidebar.nav-link>
             @endif
             @if(\App\Http\Controllers\users\guardItems::checkGuardsIfLoginResultTypeUser() == 'admin')
-                <x-sidebar.nav-link route="listTariff" title="---- Bank Management" icon="fas fa-money-bill-wave">
-                    Tariff Price
-                </x-sidebar.nav-link>
-                <x-sidebar.nav-link route="make-payment" icon="mdi mdi-contacts">
+
+                <x-sidebar.nav-link route="make-payment" icon="mdi mdi-contacts" title="---- Bank Management"
+                >
                     Make Billing
                 </x-sidebar.nav-link>
                 <x-sidebar.nav-link icon=" fas fa-check-square" route="confirm-and-pay">
@@ -30,7 +29,11 @@
                 $user = \App\Http\Controllers\users\guardItems::checkGuardsIfLoginResultAdminTypeId();
             @endphp
             @if($user == 1)
-                <x-sidebar.nav-link icon="fa fa-user" title="---  Master" route="customer-management">
+                <x-sidebar.nav-link route="listTariff" title="---  Master" route="customer-management"
+                                    icon="fas fa-money-bill-wave">
+                    Tariff Price
+                </x-sidebar.nav-link>
+                <x-sidebar.nav-link icon="fa fa-user">
                     Manage Customer
                 </x-sidebar.nav-link>
                 <x-sidebar.nav-link icon="fa fa-user" route="admin-management">

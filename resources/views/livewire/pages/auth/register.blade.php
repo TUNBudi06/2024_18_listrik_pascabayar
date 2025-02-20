@@ -57,16 +57,13 @@ $submitRegister = function () {
                 <!-- Step 1 -->
                 <div x-show="$store.step_panel.step === 1">
                     <x-form.input-text name="name" label="Name" placeholder="Name" required autofocus
-                                       wireModel="register.name" :messages="$errors->get('register.name')[0] ?? null"/>
+                                       wireModel="register.name" />
                     <x-form.input-text name="username" label="Username" placeholder="Username" required
-                                       wireModel="register.username"
-                                       :messages="$errors->get('register.username')[0] ?? null"/>
+                                       wireModel="register.username"/>
                     <x-form.input-text name="password" label="Password" placeholder="Password" type="password" required
-                                       wireModel="register.password"
-                                       :messages="$errors->get('register.password')[0] ?? null"/>
+                                       wireModel="register.password"/>
                     <x-form.input-text name="password_confirmation" label="Password Confirmation" type="password" required
-                                       wireModel="register.password_confirmation"
-                                       :messages="$errors->get('register.password_confirmation')[0] ?? null"/>
+                                       wireModel="register.password_confirmation"/>
                     <button type="button" class="btn btn-info w-100"
                             wire:click="validateStep(1)">
                         Next
@@ -76,10 +73,8 @@ $submitRegister = function () {
                 <!-- Step 2 -->
                 <div x-show="$store.step_panel.step  === 2">
                     <x-form.input-textarea name="alamat" label="Alamat" placeholder="Alamat" required
-                                           wireModel="register.alamat"
-                                           :messages="$errors->get('register.alamat')[0] ?? null"/>
-                    <x-form.input-dropdown name="tarif_kwh" label="Tarif KWH" wireModel="register.tarif_kwh"
-                                           :messages="$errors->get('register.tarif_kwh')[0] ?? null">
+                                           wireModel="register.alamat"/>
+                    <x-form.input-dropdown name="tarif_kwh" label="Tarif KWH" wireModel="register.tarif_kwh">
                         @foreach($tarif_kwh as $index => $tarif)
                             <x-form.input-dropdown-list value="{{$tarif->id}}"
                                                         label="{{$index}}. {{$tarif->daya}}VA / Rp.{{$tarif->tarif_perkwh}}"></x-form.input-dropdown-list>
