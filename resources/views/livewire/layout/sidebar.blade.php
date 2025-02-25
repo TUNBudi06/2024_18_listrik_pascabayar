@@ -29,11 +29,11 @@
                 $user = \App\Http\Controllers\users\guardItems::checkGuardsIfLoginResultAdminTypeId();
             @endphp
             @if($user == 1)
-                <x-sidebar.nav-link route="listTariff" title="---  Master" route="customer-management"
+                <x-sidebar.nav-link route="listTariff" title="---  Master" route="listTariff"
                                     icon="fas fa-money-bill-wave">
                     Tariff Price
                 </x-sidebar.nav-link>
-                <x-sidebar.nav-link icon="fa fa-user">
+                <x-sidebar.nav-link icon="fa fa-user" route="customer-management">
                     Manage Customer
                 </x-sidebar.nav-link>
                 <x-sidebar.nav-link icon="fa fa-user" route="admin-management">
